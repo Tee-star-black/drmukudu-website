@@ -56,7 +56,7 @@
     </script>
 
     <style>
-      .patient-app-cta {
+      .patient-app-desktop-cta {
         position: fixed;
         right: 20px;
         bottom: 20px;
@@ -64,8 +64,9 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 8px;
         min-height: 48px;
-        padding: 0 20px;
+        padding: 0 18px;
         border: 1px solid rgba(88, 214, 194, 0.8);
         background: #0b2532;
         color: #ffffff;
@@ -75,24 +76,92 @@
         transition: transform 160ms ease, background 160ms ease, color 160ms ease;
       }
 
-      .patient-app-cta:hover {
+      .patient-app-desktop-cta:hover {
         transform: translateY(-2px);
         background: #58d6c2;
         color: #081820;
       }
 
-      .patient-app-cta:focus-visible {
+      .patient-app-desktop-cta:focus-visible,
+      .mobile-action-link:focus-visible {
         outline: 3px solid rgba(88, 214, 194, 0.55);
         outline-offset: 3px;
       }
 
-      @media (max-width: 640px) {
-        .patient-app-cta {
-          right: 12px;
-          bottom: 12px;
-          min-height: 46px;
-          padding: 0 16px;
-          font-size: 13px;
+      .mobile-action-bar {
+        display: none;
+      }
+
+      @media (max-width: 767px) {
+        body {
+          padding-bottom: calc(72px + env(safe-area-inset-bottom));
+        }
+
+        .patient-app-desktop-cta {
+          display: none;
+        }
+
+        .mobile-action-bar {
+          position: fixed;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 10000;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          min-height: 72px;
+          padding-bottom: env(safe-area-inset-bottom);
+          border-top: 1px solid rgba(191, 213, 223, 0.28);
+          background: rgba(8, 24, 32, 0.97);
+          box-shadow: 0 -12px 30px rgba(8, 24, 32, 0.18);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+        }
+
+        .mobile-action-link {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 5px;
+          padding: 10px 6px;
+          color: rgba(255, 255, 255, 0.72);
+          font: 600 11px/1.15 Manrope, Inter, system-ui, sans-serif;
+          text-align: center;
+          text-decoration: none;
+          transition: background 160ms ease, color 160ms ease;
+        }
+
+        .mobile-action-link + .mobile-action-link {
+          border-left: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .mobile-action-link:hover,
+        .mobile-action-link:active {
+          background: rgba(255, 255, 255, 0.05);
+          color: #ffffff;
+        }
+
+        .mobile-action-link.patient-app {
+          background: #58d6c2;
+          color: #081820;
+        }
+
+        .mobile-action-link.patient-app:hover,
+        .mobile-action-link.patient-app:active {
+          background: #6fe0cf;
+          color: #081820;
+        }
+
+        .mobile-action-icon {
+          width: 20px;
+          height: 20px;
+          fill: none;
+          stroke: currentColor;
+          stroke-width: 1.8;
+          stroke-linecap: round;
+          stroke-linejoin: round;
         }
       }
     </style>
@@ -133,13 +202,43 @@
 
   <body>
     <div id="root"></div>
+
     <a
-      class="patient-app-cta"
+      class="patient-app-desktop-cta"
       href="https://patient.drmukudu.co.za/install"
       aria-label="Get the Dr Mukudu patient app"
     >
       Get Patient App
     </a>
+
+    <nav class="mobile-action-bar" aria-label="Quick patient actions">
+      <a class="mobile-action-link" href="tel:0116131141" aria-label="Call Dr Mukudu and Partners">
+        <svg class="mobile-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8 9.73a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92z" />
+        </svg>
+        <span>Call</span>
+      </a>
+
+      <a class="mobile-action-link" href="https://wa.me/27615471346" aria-label="WhatsApp Dr Mukudu and Partners">
+        <svg class="mobile-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8A8.5 8.5 0 0 1 12.5 20a8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z" />
+        </svg>
+        <span>WhatsApp</span>
+      </a>
+
+      <a
+        class="mobile-action-link patient-app"
+        href="https://patient.drmukudu.co.za/install"
+        aria-label="Get the Dr Mukudu patient app"
+      >
+        <svg class="mobile-action-icon" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="2" width="14" height="20" rx="2" />
+          <path d="M9 6h6M12 18h.01" />
+        </svg>
+        <span>Patient App</span>
+      </a>
+    </nav>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
