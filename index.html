@@ -55,6 +55,48 @@
       gtag('config', 'G-21WWHMKVBT');
     </script>
 
+    <style>
+      .patient-app-cta {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 9999;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 20px;
+        border: 1px solid rgba(88, 214, 194, 0.8);
+        background: #0b2532;
+        color: #ffffff;
+        font: 600 14px/1.2 Manrope, Inter, system-ui, sans-serif;
+        text-decoration: none;
+        box-shadow: 0 14px 34px rgba(8, 24, 32, 0.22);
+        transition: transform 160ms ease, background 160ms ease, color 160ms ease;
+      }
+
+      .patient-app-cta:hover {
+        transform: translateY(-2px);
+        background: #58d6c2;
+        color: #081820;
+      }
+
+      .patient-app-cta:focus-visible {
+        outline: 3px solid rgba(88, 214, 194, 0.55);
+        outline-offset: 3px;
+      }
+
+      @media (max-width: 640px) {
+        .patient-app-cta {
+          right: 12px;
+          bottom: 12px;
+          min-height: 46px;
+          padding: 0 16px;
+          font-size: 13px;
+        }
+      }
+    </style>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -91,6 +133,13 @@
 
   <body>
     <div id="root"></div>
+    <a
+      class="patient-app-cta"
+      href="https://patient.drmukudu.co.za/install"
+      aria-label="Get the Dr Mukudu patient app"
+    >
+      Get Patient App
+    </a>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
