@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+/* Dr Mukudu & Partners brand sizing */
+header span:has(> img[alt="Dr Mukudu & Partners logo"]) {
+  width: 4rem !important;
+  height: 4rem !important;
+  padding: 0.2rem !important;
+}
+
+footer span:has(> img[alt="Dr Mukudu & Partners logo"]) {
+  width: 4.75rem !important;
+  height: 4.75rem !important;
+  padding: 0.25rem !important;
+}
+
+@media (min-width: 640px) {
+  header span:has(> img[alt="Dr Mukudu & Partners logo"]) {
+    width: 5rem !important;
+    height: 5rem !important;
+  }
+
+  footer span:has(> img[alt="Dr Mukudu & Partners logo"]) {
+    width: 5.25rem !important;
+    height: 5.25rem !important;
+  }
+}
