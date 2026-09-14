@@ -2,59 +2,45 @@
 <html lang="en-ZA">
   <head>
     <meta charset="UTF-8" />
-
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
-    <link rel="alternate icon" type="image/png" href="/logo.png?v=2" />
-    <link rel="apple-touch-icon" href="/logo.png?v=2" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Dr Mukudu & Partners | GP Practice in Tulisa Park, Johannesburg South</title>
-
+    <title>Dr Mukudu & Partners | GP in Johannesburg South</title>
     <meta
       name="description"
-      content="Dr Mukudu & Partners is a modern GP practice in Tulisa Park, Johannesburg South, offering general medical consultations, women’s health, preventative care, MedKulula subscriptions and free male circumcision consultations from age 10."
+      content="Dr Mukudu & Partners is a modern GP practice in Tulisa Park, Johannesburg South, offering general consultations, women’s health, preventative care, MedKulula and medical male circumcision services."
     />
-
-    <meta
-      name="keywords"
-      content="Dr Mukudu, Dr Mukudu and Partners, GP Tulisa Park, doctor Johannesburg South, medical practice Tulisa Park, GP consultation Johannesburg South, women’s health Johannesburg South, MedKulula, free male circumcision Johannesburg, TeledoctorSA"
-    />
-
     <meta name="author" content="Dr Mukudu & Partners" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#081820" />
+    <meta name="format-detection" content="telephone=yes" />
 
     <link rel="canonical" href="https://drmukudu.co.za/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=20260914-3" />
+    <link rel="alternate icon" href="/favicon.svg?v=20260914-3" />
+    <link rel="apple-touch-icon" href="/logo.png?v=20260914-3" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Dr Mukudu & Partners" />
-    <meta property="og:title" content="Dr Mukudu & Partners | GP Practice in Tulisa Park" />
+    <meta property="og:title" content="Dr Mukudu & Partners | GP in Johannesburg South" />
     <meta
       property="og:description"
-      content="Modern, patient-centred primary healthcare in Tulisa Park, Johannesburg South. Book consultations, access MedKulula plans, and enquire about free male circumcision consultations from age 10."
+      content="Modern, patient-centred primary healthcare in Tulisa Park, Johannesburg South. GP consultations, women’s health, preventative care and accessible care plans."
     />
     <meta property="og:url" content="https://drmukudu.co.za/" />
-    <meta property="og:image" content="https://drmukudu.co.za/logo.png" />
+    <meta property="og:image" content="https://drmukudu.co.za/logo.png?v=20260914-3" />
+    <meta property="og:image:alt" content="Dr Mukudu & Partners logo" />
     <meta property="og:locale" content="en_ZA" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Dr Mukudu & Partners | GP Practice in Tulisa Park" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Dr Mukudu & Partners | GP in Johannesburg South" />
     <meta
       name="twitter:description"
-      content="GP consultations, women’s health, preventative care, MedKulula subscriptions and free male circumcision consultations from age 10."
+      content="Patient-centred primary healthcare in Tulisa Park, Johannesburg South."
     />
-    <meta name="twitter:image" content="https://drmukudu.co.za/logo.png" />
-
-    <meta name="theme-color" content="#081820" />
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21WWHMKVBT"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-21WWHMKVBT');
-    </script>
+    <meta name="twitter:image" content="https://drmukudu.co.za/logo.png?v=20260914-3" />
 
     <style>
       .patient-app-desktop-cta {
@@ -84,13 +70,103 @@
       }
 
       .patient-app-desktop-cta:focus-visible,
-      .mobile-action-link:focus-visible {
+      .mobile-action-link:focus-visible,
+      .cookie-consent button:focus-visible,
+      .cookie-settings-trigger:focus-visible {
         outline: 3px solid rgba(88, 214, 194, 0.55);
         outline-offset: 3px;
       }
 
       .mobile-action-bar {
         display: none;
+      }
+
+      .cookie-consent {
+        position: fixed;
+        left: 24px;
+        bottom: 24px;
+        z-index: 20000;
+        display: none;
+        width: min(720px, calc(100vw - 48px));
+        border: 1px solid rgba(88, 214, 194, 0.35);
+        background: #081820;
+        color: #ffffff;
+        box-shadow: 0 24px 70px rgba(8, 24, 32, 0.35);
+        font-family: Manrope, Inter, system-ui, sans-serif;
+      }
+
+      .cookie-consent[data-visible="true"] {
+        display: block;
+      }
+
+      .cookie-consent__inner {
+        display: grid;
+        gap: 18px;
+        padding: 22px;
+      }
+
+      .cookie-consent__title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .cookie-consent__copy {
+        margin: 8px 0 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+
+      .cookie-consent__copy a {
+        color: #73dfcf;
+        text-underline-offset: 3px;
+      }
+
+      .cookie-consent__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .cookie-consent button,
+      .cookie-settings-trigger {
+        border-radius: 0;
+        font: 700 12px/1 Manrope, Inter, system-ui, sans-serif;
+        cursor: pointer;
+      }
+
+      .cookie-consent button {
+        min-height: 42px;
+        padding: 0 16px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        background: transparent;
+        color: #ffffff;
+      }
+
+      .cookie-consent button[data-primary="true"] {
+        border-color: #58d6c2;
+        background: #58d6c2;
+        color: #081820;
+      }
+
+      .cookie-settings-trigger {
+        position: fixed;
+        left: 18px;
+        bottom: 18px;
+        z-index: 9000;
+        display: none;
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid rgba(8, 24, 32, 0.18);
+        background: rgba(255, 255, 255, 0.94);
+        color: #081820;
+        box-shadow: 0 10px 30px rgba(8, 24, 32, 0.14);
+      }
+
+      .cookie-settings-trigger[data-visible="true"] {
+        display: inline-flex;
+        align-items: center;
       }
 
       @media (max-width: 767px) {
@@ -164,38 +240,77 @@
           stroke-linecap: round;
           stroke-linejoin: round;
         }
+
+        .cookie-consent {
+          left: 12px;
+          bottom: calc(84px + env(safe-area-inset-bottom));
+          width: calc(100vw - 24px);
+        }
+
+        .cookie-consent__inner {
+          padding: 18px;
+        }
+
+        .cookie-consent__actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .cookie-consent button {
+          width: 100%;
+        }
+
+        .cookie-settings-trigger {
+          left: 12px;
+          bottom: calc(84px + env(safe-area-inset-bottom));
+        }
       }
     </style>
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "MedicalClinic",
-        "name": "Dr Mukudu & Partners",
-        "image": "https://drmukudu.co.za/logo.png",
-        "url": "https://drmukudu.co.za/",
-        "telephone": "+27116131141",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "29 Landor Street",
-          "addressLocality": "Tulisa Park",
-          "addressRegion": "Gauteng",
-          "postalCode": "2197",
-          "addressCountry": "ZA"
-        },
-        "areaServed": [
-          "Tulisa Park",
-          "Johannesburg South",
-          "Gauteng"
-        ],
-        "medicalSpecialty": [
-          "PrimaryCare",
-          "GeneralPractice",
-          "PreventiveMedicine"
-        ],
-        "description": "Dr Mukudu & Partners is a modern medical practice in Tulisa Park, Johannesburg South, offering GP consultations, women’s health, preventative care, MedKulula subscriptions and free male circumcision consultations from age 10.",
-        "sameAs": [
-          "https://teledoctorsa.co.za/"
+        "@graph": [
+          {
+            "@type": "MedicalClinic",
+            "@id": "https://drmukudu.co.za/#clinic",
+            "name": "Dr Mukudu & Partners",
+            "url": "https://drmukudu.co.za/",
+            "logo": "https://drmukudu.co.za/logo.png?v=20260914-3",
+            "image": "https://drmukudu.co.za/logo.png?v=20260914-3",
+            "telephone": "+27116131141",
+            "description": "Patient-centred primary healthcare in Tulisa Park, Johannesburg South, including GP consultations, women’s health, preventative care and medical male circumcision services.",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "29 Landor Street",
+              "addressLocality": "Tulisa Park",
+              "addressRegion": "Gauteng",
+              "postalCode": "2197",
+              "addressCountry": "ZA"
+            },
+            "areaServed": ["Tulisa Park", "Johannesburg South", "Gauteng"],
+            "medicalSpecialty": ["PrimaryCare", "GeneralPractice", "PreventiveMedicine"],
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+27116131141",
+              "contactType": "appointments",
+              "areaServed": "ZA"
+            },
+            "availableService": [
+              {"@type": "MedicalProcedure", "name": "General medical consultations"},
+              {"@type": "MedicalProcedure", "name": "Women’s health and contraceptive care"},
+              {"@type": "MedicalProcedure", "name": "Preventative care"},
+              {"@type": "MedicalProcedure", "name": "Medical male circumcision"}
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://drmukudu.co.za/#website",
+            "url": "https://drmukudu.co.za/",
+            "name": "Dr Mukudu & Partners",
+            "inLanguage": "en-ZA",
+            "publisher": {"@id": "https://drmukudu.co.za/#clinic"}
+          }
         ]
       }
     </script>
@@ -239,6 +354,89 @@
         <span>Patient App</span>
       </a>
     </nav>
+
+    <section id="cookie-consent" class="cookie-consent" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+      <div class="cookie-consent__inner">
+        <div>
+          <p class="cookie-consent__title">Your privacy matters</p>
+          <p class="cookie-consent__copy">
+            We use essential site storage to remember your privacy choice. With your permission, we also use Google Analytics to understand website usage and improve the experience. You can accept or reject optional analytics. Read our <a href="/cookie-policy">Cookie Policy</a>.
+          </p>
+        </div>
+        <div class="cookie-consent__actions">
+          <button type="button" id="cookie-reject">Reject optional</button>
+          <button type="button" id="cookie-accept" data-primary="true">Accept analytics</button>
+        </div>
+      </div>
+    </section>
+
+    <button type="button" id="cookie-settings-trigger" class="cookie-settings-trigger">Cookie settings</button>
+
+    <script>
+      (function () {
+        const CONSENT_KEY = 'drmukudu_cookie_consent_v1';
+        const GA_ID = 'G-21WWHMKVBT';
+        const banner = document.getElementById('cookie-consent');
+        const acceptButton = document.getElementById('cookie-accept');
+        const rejectButton = document.getElementById('cookie-reject');
+        const settingsButton = document.getElementById('cookie-settings-trigger');
+
+        function setBannerVisible(visible) {
+          banner.dataset.visible = visible ? 'true' : 'false';
+          settingsButton.dataset.visible = visible ? 'false' : 'true';
+        }
+
+        function loadAnalytics() {
+          if (window.__drMukuduAnalyticsLoaded) return;
+          window.__drMukuduAnalyticsLoaded = true;
+          window.dataLayer = window.dataLayer || [];
+          window.gtag = function () { window.dataLayer.push(arguments); };
+          window.gtag('js', new Date());
+          window.gtag('consent', 'default', {
+            analytics_storage: 'granted',
+            ad_storage: 'denied',
+            ad_user_data: 'denied',
+            ad_personalization: 'denied'
+          });
+          window.gtag('config', GA_ID, { anonymize_ip: true });
+
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
+          document.head.appendChild(script);
+        }
+
+        function saveChoice(choice) {
+          try {
+            localStorage.setItem(CONSENT_KEY, choice);
+          } catch (error) {
+            // The site still works if storage is unavailable.
+          }
+          setBannerVisible(false);
+          if (choice === 'accepted') loadAnalytics();
+        }
+
+        let savedChoice = null;
+        try {
+          savedChoice = localStorage.getItem(CONSENT_KEY);
+        } catch (error) {
+          savedChoice = null;
+        }
+
+        if (savedChoice === 'accepted') {
+          setBannerVisible(false);
+          loadAnalytics();
+        } else if (savedChoice === 'rejected') {
+          setBannerVisible(false);
+        } else {
+          setBannerVisible(true);
+        }
+
+        acceptButton.addEventListener('click', function () { saveChoice('accepted'); });
+        rejectButton.addEventListener('click', function () { saveChoice('rejected'); });
+        settingsButton.addEventListener('click', function () { setBannerVisible(true); });
+      })();
+    </script>
 
     <script type="module" src="/src/main.jsx"></script>
   </body>
