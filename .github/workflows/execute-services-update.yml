@@ -1,0 +1,78 @@
+name: Execute services update
+
+on:
+  push:
+    branches:
+      - feature/services-content-circumcision
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/services-content-circumcision
+          fetch-depth: 0
+
+      - name: Apply prepared patch safely
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          workflow = Path('.github/workflows/apply-services-update.yml').read_text(encoding='utf-8')
+          start_marker = '      - name: Apply targeted website updates\n        shell: python\n        run: |\n'
+          end_marker = '\n      - name: Remove temporary extraction workflow'
+          start = workflow.index(start_marker) + len(start_marker)
+          end = workflow.index(end_marker, start)
+          lines = workflow[start:end].splitlines()
+          code = '\n'.join(line[10:] if line.startswith('          ') else line for line in lines)
+
+          old_fn = '''def replace_once(old, new, label):
+              global text
+              if old not in text:
+                  raise SystemExit(f'Missing expected block: {label}')
+              text = text.replace(old, new, 1)'''
+          new_fn = '''def replace_once(old, new, label):
+              global text
+              if old in text:
+                  text = text.replace(old, new, 1)
+                  return
+              parts = re.split(r'(\\s+)', old)
+              pattern = ''.join(r'\\s+' if part.isspace() else re.escape(part) for part in parts if part)
+              text, count = re.subn(pattern, lambda match: new, text, count=1, flags=re.S)
+              if count != 1:
+                  raise SystemExit(f'Missing expected block: {label}')'''
+          if old_fn not in code:
+              raise SystemExit('Could not patch replace_once helper')
+          code = code.replace(old_fn, new_fn, 1)
+          exec(compile(code, '<services-update>', 'exec'), {'__name__': '__main__'})
+
+      - name: Remove temporary automation files
+        run: |
+          rm -f .github/workflows/extract-service-docs.yml
+          rm -f .github/workflows/apply-services-update.yml
+          rm -f .github/workflows/repair-services-workflow.yml
+          rm -f .github/workflows/execute-services-update.yml
+          rm -f .services-update-trigger
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Commit verified website changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: expand services and add free circumcision page"
+          git push origin feature/services-content-circumcision
