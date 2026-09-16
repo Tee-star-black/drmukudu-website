@@ -25,6 +25,14 @@ const navItems = [
   { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },
 ];
 
+const serviceNavItems = [
+  { label: "All services", href: "/services", index: "00" },
+  { label: "General medical consultations", href: "/services#general-medical-consultations", index: "01" },
+  { label: "Preventative & procedural care", href: "/services#preventative-procedural-care", index: "02" },
+  { label: "Women’s health", href: "/services#womens-health", index: "03" },
+  { label: "Free male circumcision", href: "/free-male-circumcision", index: "04" },
+];
+
 const SITE_URL = "https://drmukudu.co.za";
 
 const seoPages = {
@@ -645,16 +653,32 @@ function ArrowIcon({ size = 18, className = "" }) {
 }
 
 function navigateTo(href) {
+  const hashIndex = href.indexOf("#");
+  const targetId = hashIndex >= 0 ? href.slice(hashIndex + 1) : "";
+
   window.history.pushState({}, "", href);
   window.dispatchEvent(new Event("popstate"));
+
+  if (targetId) {
+    window.setTimeout(() => {
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 0);
+    return;
+  }
+
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function AppLink({ href, children, className = "", ...props }) {
+function AppLink({ href, children, className = "", onClick, ...props }) {
   const isExternal = href.startsWith("http://") || href.startsWith("https://");
 
   function handleClick(event) {
-    if (isExternal || !href.startsWith("/")) return;
+    onClick?.(event);
+    if (event.defaultPrevented || isExternal || !href.startsWith("/")) return;
+
     event.preventDefault();
     navigateTo(href);
   }
@@ -863,6 +887,72 @@ function Header() {
             const isActive = pathname === item.href;
             const isCircumcision = item.label === "Free Male Circumcisions";
             const isExternal = item.href.startsWith("http");
+            const isServices = item.label === "Services";
+
+            if (isServices) {
+              return (
+                <div key={item.label} className="group relative">
+                  <AppLink
+                    href={item.href}
+                    className={`relative inline-flex items-center gap-1.5 whitespace-nowrap py-2 text-[12.5px] font-medium tracking-[0.005em] transition-colors ${
+                      pathname === "/services" ? "text-white" : "text-white/62 hover:text-white"
+                    }`}
+                    aria-haspopup="true"
+                  >
+                    <span>Services</span>
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 12 12"
+                      fill="none"
+                      aria-hidden="true"
+                      className="mt-px transition-transform duration-300 group-hover:rotate-180 group-focus-within:rotate-180"
+                    >
+                      <path d="m3 4.5 3 3 3-3" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span
+                      className={`absolute inset-x-0 -bottom-[3px] h-px origin-left bg-[#58d6c2] transition-transform duration-300 ${
+                        pathname === "/services" ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100 group-focus-within:scale-x-100"
+                      }`}
+                      aria-hidden="true"
+                    />
+                  </AppLink>
+
+                  <div className="pointer-events-none invisible absolute left-1/2 top-full z-50 w-[21rem] -translate-x-1/2 pt-4 opacity-0 transition-all duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+                    <div className="border-t border-white/12 bg-[#081820]/98 px-5 py-2 shadow-[0_22px_55px_rgba(0,0,0,0.28)] backdrop-blur-xl">
+                      <div className="flex items-center justify-between border-b border-white/[0.08] py-3">
+                        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/34">
+                          Clinical services
+                        </span>
+                        <span className="text-[10px] text-[#58d6c2]">Dr Mukudu & Partners</span>
+                      </div>
+
+                      {serviceNavItems.map((service) => (
+                        <AppLink
+                          key={service.label}
+                          href={service.href}
+                          className="group/service flex items-center gap-4 border-b border-white/[0.07] py-3.5 last:border-b-0"
+                        >
+                          <span className="w-5 shrink-0 text-[10px] font-medium text-white/28 transition group-hover/service:text-[#58d6c2]">
+                            {service.index}
+                          </span>
+                          <span className={`text-[13px] transition-colors ${
+                            service.label === "Free male circumcision"
+                              ? "font-medium text-[#76e0cf] group-hover/service:text-white"
+                              : "text-white/68 group-hover/service:text-white"
+                          }`}>
+                            {service.label}
+                          </span>
+                          <span className="ml-auto -translate-x-1 text-white/18 opacity-0 transition-all group-hover/service:translate-x-0 group-hover/service:text-white/55 group-hover/service:opacity-100">
+                            →
+                          </span>
+                        </AppLink>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            }
 
             return (
               <AppLink
@@ -925,6 +1015,38 @@ function Header() {
                 const isActive = pathname === item.href;
                 const isCircumcision = item.label === "Free Male Circumcisions";
                 const isExternal = item.href.startsWith("http");
+                const isServices = item.label === "Services";
+
+                if (isServices) {
+                  return (
+                    <details key={item.label} className="group/services border-b border-white/[0.07]" open={pathname === "/services" ? true : undefined}>
+                      <summary className={`flex cursor-pointer list-none items-center justify-between py-3.5 text-sm transition-colors [&::-webkit-details-marker]:hidden ${
+                        pathname === "/services" ? "text-white" : "text-white/68"
+                      }`}>
+                        <span>Services</span>
+                        <span className="text-white/30 transition-transform duration-200 group-open/services:rotate-180">⌄</span>
+                      </summary>
+
+                      <div className="pb-3 pl-4">
+                        {serviceNavItems.map((service) => (
+                          <AppLink
+                            key={service.label}
+                            href={service.href}
+                            onClick={() => setMenuOpen(false)}
+                            className={`flex items-center gap-3 border-t border-white/[0.06] py-3 text-[13px] ${
+                              service.label === "Free male circumcision"
+                                ? "font-medium text-[#76e0cf]"
+                                : "text-white/58 hover:text-white"
+                            }`}
+                          >
+                            <span className="w-5 text-[10px] text-white/25">{service.index}</span>
+                            <span>{service.label}</span>
+                          </AppLink>
+                        ))}
+                      </div>
+                    </details>
+                  );
+                }
 
                 return (
                   <AppLink
@@ -2507,7 +2629,7 @@ function ServicesPage() {
         <ServicesList />
       </Section>
 
-      <section className="border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
+      <section id="general-medical-consultations" className="scroll-mt-24 border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid border border-[#bfd5df] lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[24rem] overflow-hidden bg-[#081820] lg:min-h-full">
@@ -2537,7 +2659,7 @@ function ServicesPage() {
         </div>
       </section>
 
-      <section className="border-t border-[#bfd5df] bg-[#eef7fa] px-6 py-16 lg:px-10 lg:py-24">
+      <section id="preventative-procedural-care" className="scroll-mt-24 border-t border-[#bfd5df] bg-[#eef7fa] px-6 py-16 lg:px-10 lg:py-24">
         <div className="mx-auto grid max-w-7xl border border-[#bfd5df] bg-white lg:grid-cols-[1.05fr_0.95fr]">
           <div className="p-7 md:p-10">
             <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">Preventative & procedural care</p>
@@ -2554,7 +2676,7 @@ function ServicesPage() {
         </div>
       </section>
 
-      <section className="border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
+      <section id="womens-health" className="scroll-mt-24 border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <div className="grid border border-[#bfd5df] lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[26rem] overflow-hidden bg-[#081820]">
