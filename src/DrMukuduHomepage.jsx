@@ -815,6 +815,10 @@ function PageHero({ eyebrow, title, subtitle, fixture = "clinic" }) {
 
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
+  const pathname = window.location.pathname;
+  const primaryNavItems = navItems.filter((item) => ["Home", "About us", "Services", "MedKulula Subscription"].includes(item.label));
+  const secondaryNavItems = navItems.filter((item) => ["Price List", "TeledoctorSA"].includes(item.label));
+  const circumcisionItem = navItems.find((item) => item.label === "Free Male Circumcisions");
 
   React.useEffect(() => {
     function closeMenu() {
@@ -826,10 +830,10 @@ function Header() {
   }, []);
 
   return (
-    <header className="absolute left-0 right-0 top-0 z-50">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
-        <AppLink href="/" className="flex min-w-0 items-center gap-3 text-white">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/8 p-1.5 shadow-[0_10px_30px_rgba(0,0,0,0.12)] sm:h-11 sm:w-11">
+    <header className="absolute left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#081820]/72 backdrop-blur-xl">
+      <div className="mx-auto flex min-h-[74px] max-w-[90rem] items-center gap-5 px-4 sm:px-6 lg:px-8 xl:px-10">
+        <AppLink href="/" className="flex min-w-0 shrink-0 items-center gap-3 text-white">
+          <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/12 bg-white/[0.04] p-1.5 sm:h-11 sm:w-11">
             <img
               src={LOGO_SRC}
               alt="Dr Mukudu & Partners logo"
@@ -837,90 +841,135 @@ function Header() {
             />
           </span>
 
-          <span className="min-w-0">
-            <span className="block truncate text-sm font-semibold tracking-normal">
+          <span className="hidden min-w-0 sm:block">
+            <span className="block whitespace-nowrap text-[13px] font-semibold tracking-[0.01em]">
               Dr Mukudu & Partners
             </span>
-            <span className="block truncate text-[11px] text-white/60">
+            <span className="mt-0.5 block whitespace-nowrap text-[10px] tracking-[0.02em] text-white/48">
               Optimising Health, Optimising Growth
             </span>
           </span>
         </AppLink>
 
-        <nav className="hidden items-center gap-7 text-sm text-white/75 lg:flex" aria-label="Main navigation">
-          {navItems.map((item) => (
-            <AppLink
-              key={item.label}
-              href={item.href}              className={item.emphasis
-      ? "border border-[#58d6c2] bg-[#58d6c2] px-3 py-2 font-semibold text-[#081820] transition hover:border-white hover:bg-white"
-      : "transition hover:text-white"}
-  >
-    {item.label}
-            </AppLink>
-          ))}
-        </nav>
+        <div className="hidden min-w-0 flex-1 items-center justify-end gap-2 xl:flex">
+          <nav className="flex items-center border border-white/10 bg-white/[0.035] p-1" aria-label="Main navigation">
+            {primaryNavItems.map((item) => {
+              const isActive = pathname === item.href;
+              const label = item.label === "MedKulula Subscription" ? "MedKulula" : item.label;
+              return (
+                <AppLink
+                  key={item.label}
+                  href={item.href}
+                  className={`whitespace-nowrap px-3.5 py-2 text-[13px] font-medium transition ${
+                    isActive
+                      ? "bg-white text-[#0b2532]"
+                      : "text-white/68 hover:bg-white/[0.07] hover:text-white"
+                  }`}
+                >
+                  {label}
+                </AppLink>
+              );
+            })}
 
-        <div className="hidden items-center gap-3 md:flex">
-          <AppLink
-            href="/contact"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-white transition hover:bg-white hover:text-[#174766]"
-            aria-label="Contact us"
-            title="Contact us"
-          >
-            <Icon name="phone" />
-          </AppLink>
+            <details className="group relative">
+              <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3.5 py-2 text-[13px] font-medium text-white/68 transition hover:bg-white/[0.07] hover:text-white [&::-webkit-details-marker]:hidden">
+                More
+                <span className="text-[10px] transition group-open:rotate-180">⌄</span>
+              </summary>
+              <div className="absolute right-0 top-[calc(100%+0.75rem)] w-52 border border-white/10 bg-[#081820]/98 p-1.5 shadow-2xl backdrop-blur-xl">
+                {secondaryNavItems.map((item) => (
+                  <AppLink
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center justify-between px-3 py-2.5 text-[13px] text-white/70 transition hover:bg-white/[0.07] hover:text-white"
+                  >
+                    <span>{item.label}</span>
+                    {item.href.startsWith("http") ? <span className="text-white/35">↗</span> : null}
+                  </AppLink>
+                ))}
+                <AppLink
+                  href="/contact"
+                  className="flex items-center justify-between px-3 py-2.5 text-[13px] text-white/70 transition hover:bg-white/[0.07] hover:text-white"
+                >
+                  <span>Contact</span>
+                  <span className="text-white/35">→</span>
+                </AppLink>
+              </div>
+            </details>
+          </nav>
+
+          {circumcisionItem ? (
+            <AppLink
+              href={circumcisionItem.href}
+              className="inline-flex shrink-0 items-center gap-2 border border-[#58d6c2] bg-[#58d6c2] px-4 py-2.5 text-[13px] font-semibold text-[#081820] transition hover:border-white hover:bg-white"
+            >
+              Free Circumcision
+              <ArrowIcon size={14} />
+            </AppLink>
+          ) : null}
 
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            className="rounded-full border border-white/20 px-5 py-2 text-sm font-medium text-white transition hover:bg-white hover:text-[#174766]"
+            className="inline-flex shrink-0 items-center gap-2 border border-white/14 px-3.5 py-2.5 text-[13px] font-medium text-white/78 transition hover:border-white/35 hover:bg-white/[0.06] hover:text-white"
           >
-            WhatsApp Us
+            <Icon name="phone" size={15} />
+            WhatsApp
           </a>
         </div>
 
         <button
           type="button"
           onClick={() => setMenuOpen((value) => !value)}
-          className="inline-flex h-10 w-10 items-center justify-center border border-white/20 bg-white/5 text-white backdrop-blur transition hover:bg-white hover:text-[#081820] lg:hidden"
+          className="ml-auto inline-flex h-10 w-10 items-center justify-center border border-white/15 bg-white/[0.04] text-white transition hover:bg-white hover:text-[#081820] xl:hidden"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
         >
-          <span className="text-2xl leading-none">
-            {menuOpen ? "×" : "☰"}
-          </span>
+          <span className="text-xl leading-none">{menuOpen ? "×" : "☰"}</span>
         </button>
       </div>
 
       {menuOpen ? (
-        <div className="mx-4 border border-white/10 bg-[#081820]/95 p-4 text-white shadow-2xl backdrop-blur lg:hidden">
-          <nav className="grid gap-1" aria-label="Mobile navigation">
-            {navItems.map((item) => (
-              <AppLink
-                key={item.label}
-                href={item.href}
-                onClick={() => setMenuOpen(false)}                className={item.emphasis
-        ? "border border-[#58d6c2] bg-[#58d6c2] px-4 py-3 text-sm font-semibold text-[#081820] transition hover:bg-white"
-        : "border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/78 transition hover:bg-[#123f55] hover:text-white"}
-    >
-      {item.label}
-              </AppLink>
-            ))}
-          </nav>
+        <div className="border-t border-white/10 bg-[#081820]/98 px-4 py-4 text-white shadow-2xl backdrop-blur-xl sm:px-6 xl:hidden">
+          <div className="mx-auto max-w-3xl">
+            <nav className="grid sm:grid-cols-2" aria-label="Mobile navigation">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <AppLink
+                    key={item.label}
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className={`flex min-h-12 items-center justify-between border-b border-white/8 px-3 py-3 text-sm transition sm:odd:border-r ${
+                      item.emphasis
+                        ? "bg-[#58d6c2] font-semibold text-[#081820]"
+                        : isActive
+                          ? "bg-white/[0.08] font-medium text-white"
+                          : "text-white/72 hover:bg-white/[0.05] hover:text-white"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <span className={item.emphasis ? "text-[#081820]/55" : "text-white/30"}>
+                      {item.href.startsWith("http") ? "↗" : "→"}
+                    </span>
+                  </AppLink>
+                );
+              })}
+            </nav>
 
-          <div className="mt-4 grid gap-2 border-t border-white/10 pt-4">
-            <a
-              href={`tel:${PHONE_NUMBER}`}
-              className="bg-white px-4 py-3 text-center text-sm font-semibold text-[#081820]"
-            >
-              Call {DISPLAY_PHONE}
-            </a>
-
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              className="border border-[#58d6c2] bg-[#58d6c2] px-4 py-3 text-center text-sm font-semibold text-[#081820]"
-            >
-              WhatsApp practice
-            </a>
+            <div className="grid gap-2 pt-4 sm:grid-cols-2">
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="border border-white/12 px-4 py-3 text-center text-sm font-medium text-white transition hover:bg-white hover:text-[#081820]"
+              >
+                Call {DISPLAY_PHONE}
+              </a>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                className="border border-white bg-white px-4 py-3 text-center text-sm font-semibold text-[#081820] transition hover:bg-[#58d6c2]"
+              >
+                WhatsApp practice
+              </a>
+            </div>
           </div>
         </div>
       ) : null}
