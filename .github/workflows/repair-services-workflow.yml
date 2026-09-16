@@ -1,0 +1,36 @@
+name: Repair services update workflow
+
+on:
+  push:
+    branches:
+      - feature/services-content-circumcision
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/services-content-circumcision
+          fetch-depth: 0
+      - name: Make matcher robust
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('.github/workflows/apply-services-update.yml')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace("'''  \"/medkulula\": {\n            title: \"MedKulula Subscription | Affordable Monthly Healthcare Plans\",'''", "'''  \"/medkulula\": {'''")
+          s = s.replace("          '''  \"/free-male-circumcision\": {\n            title: \"Free Male Circumcision | Dr Mukudu & Partners Johannesburg South\",\n            description:\n              \"Free, confidential voluntary medical male circumcision (VMMC) for eligible clients aged 10 years and older, with consultation, counselling, clinical care and follow-up at Dr Mukudu & Partners.\",\n            keywords:\n              \"free male circumcision Johannesburg, VMMC Johannesburg South, medical male circumcision Tulisa Park, free circumcision age 10\",\n          },\n          \"/medkulula\": {\n            title: \"MedKulula Subscription | Affordable Monthly Healthcare Plans\",'''", "          '''  \"/free-male-circumcision\": {\n            title: \"Free Male Circumcision | Dr Mukudu & Partners Johannesburg South\",\n            description:\n              \"Free, confidential voluntary medical male circumcision (VMMC) for eligible clients aged 10 years and older, with consultation, counselling, clinical care and follow-up at Dr Mukudu & Partners.\",\n            keywords:\n              \"free male circumcision Johannesburg, VMMC Johannesburg South, medical male circumcision Tulisa Park, free circumcision age 10\",\n          },\n          \"/medkulula\": {'''")
+          s = s.replace("          git add src/DrMukuduHomepage.jsx .github/workflows/extract-service-docs.yml", "          git add -A")
+          p.write_text(s, encoding='utf-8')
+      - name: Commit repair
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/apply-services-update.yml
+          git commit -m "chore: make services updater robust"
+          git push origin feature/services-content-circumcision
