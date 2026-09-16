@@ -1,6 +1,6 @@
 name: Seamless navbar redesign
 
-on:
+"on":
   push:
     branches:
       - feature/seamless-navbar
