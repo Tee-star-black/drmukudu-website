@@ -1,0 +1,370 @@
+name: Apply services update
+
+on:
+  push:
+    branches:
+      - feature/services-content-circumcision
+
+permissions:
+  contents: write
+
+jobs:
+  update-and-verify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/services-content-circumcision
+          fetch-depth: 0
+
+      - name: Apply targeted website updates
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          path = Path('src/DrMukuduHomepage.jsx')
+          text = path.read_text(encoding='utf-8')
+
+          def replace_once(old, new, label):
+              global text
+              if old not in text:
+                  raise SystemExit(f'Missing expected block: {label}')
+              text = text.replace(old, new, 1)
+
+          replace_once(
+          '''const navItems = [
+            { label: "Home", href: "/" },
+            { label: "About us", href: "/about" },
+            { label: "Services", href: "/services" },
+            { label: "MedKulula Subscription", href: "/medkulula" },
+            { label: "Price List", href: "/price-list" },
+            { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },
+          ];''',
+          '''const navItems = [
+            { label: "Home", href: "/" },
+            { label: "About us", href: "/about" },
+            { label: "Services", href: "/services" },
+            { label: "Free Male Circumcisions", href: "/free-male-circumcision", emphasis: true },
+            { label: "MedKulula Subscription", href: "/medkulula" },
+            { label: "Price List", href: "/price-list" },
+            { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },
+          ];''',
+          'nav items')
+
+          replace_once(
+          '''  "/medkulula": {
+            title: "MedKulula Subscription | Affordable Monthly Healthcare Plans",''',
+          '''  "/free-male-circumcision": {
+            title: "Free Male Circumcision | Dr Mukudu & Partners Johannesburg South",
+            description:
+              "Free, confidential voluntary medical male circumcision (VMMC) for eligible clients aged 10 years and older, with consultation, counselling, clinical care and follow-up at Dr Mukudu & Partners.",
+            keywords:
+              "free male circumcision Johannesburg, VMMC Johannesburg South, medical male circumcision Tulisa Park, free circumcision age 10",
+          },
+          "/medkulula": {
+            title: "MedKulula Subscription | Affordable Monthly Healthcare Plans",''',
+          'circumcision seo')
+
+          replace_once(
+          '''      { label: "Services", href: "/services" },
+            { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },''',
+          '''      { label: "Services", href: "/services" },
+            { label: "Free Male Circumcisions", href: "/free-male-circumcision" },
+            { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },''',
+          'footer circumcision link')
+
+          replace_once(
+          '''const heroSlides = [''',
+          '''const serviceImages = {
+            clinicalExperience: "/images/drm/pic1.jpg",
+            consultation: "/images/drm/Gemini_Generated_Image_anxg0manxg0manxg.jpg",
+            procedures: "/images/drm/Gemini_Generated_Image_bqxtwkbqxtwkbqxt%20(1).jpg",
+            womensHealth: "/images/drm/Gemini_Generated_Image_loufcnloufcnlouf.jpg",
+          };
+
+          const heroSlides = [''',
+          'service image map')
+
+          old_services = '''const services = [
+            {
+              title: "General Medical Consultations",
+              description: "Comprehensive assessments delivered with clinical clarity, efficiency, and a focus on accurate diagnosis and effective treatment.",
+            },
+            {
+              title: "Preventative & Procedural Care",
+              description: "Medically supervised procedures and preventative interventions designed to support long-term health outcomes.",
+            },
+            {
+              title: "Women’s Health",
+              description: "Thoughtfully delivered care addressing reproductive health, wellbeing, and continuity of care across all life stages.",
+            },
+          ];'''
+          new_services = '''const services = [
+            {
+              title: "General Medical Consultations",
+              description: "Routine check-ups, acute illness care, chronic condition monitoring and preventative risk assessments, supported by clear treatment and follow-up planning.",
+            },
+            {
+              title: "Preventative & Procedural Care",
+              description: "Health screenings, selected minor clinical procedures, immunisations and preventative health audits delivered through a structured safety-first pathway.",
+            },
+            {
+              title: "Women’s Health",
+              description: "Cervical and breast screening, reproductive and family-planning care, maternal support, and guidance through hormonal and menopausal health needs.",
+            },
+          ];'''
+          replace_once(old_services, new_services, 'services summary')
+
+          replace_once(
+          '''              className="transition hover:text-white"
+            >
+              {item.label}''',
+          '''              className={item.emphasis
+                ? "border border-[#58d6c2] bg-[#58d6c2] px-3 py-2 font-semibold text-[#081820] transition hover:border-white hover:bg-white"
+                : "transition hover:text-white"}
+            >
+              {item.label}''',
+          'desktop nav styling')
+
+          replace_once(
+          '''                className="border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/78 transition hover:bg-[#123f55] hover:text-white"
+              >
+                {item.label}''',
+          '''                className={item.emphasis
+                  ? "border border-[#58d6c2] bg-[#58d6c2] px-4 py-3 text-sm font-semibold text-[#081820] transition hover:bg-white"
+                  : "border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/78 transition hover:bg-[#123f55] hover:text-white"}
+              >
+                {item.label}''',
+          'mobile nav styling')
+
+          replace_once(
+          '''            <MedicalFixtureScene variant="stethoscope" layout="card" className="absolute inset-0" />''',
+          '''            <img
+              src={serviceImages.clinicalExperience}
+              alt="Clinical care at Dr Mukudu & Partners"
+              className="absolute inset-0 h-full w-full object-cover"
+              loading="lazy"
+            />''',
+          'clinical experience image')
+
+          services_page = r'''function ServicesPage() {
+            const consultationFocus = [
+              "Routine physical check-ups and health screenings",
+              "Acute illness management for non-emergency concerns",
+              "Chronic condition monitoring, including hypertension, diabetes and cholesterol",
+              "Preventative care, health-risk assessment and lifestyle guidance",
+            ];
+
+            const consultationJourney = [
+              ["01", "Initial assessment", "Review medical history, current symptoms and vital signs."],
+              ["02", "Clinical evaluation", "Complete a focused examination and identify the appropriate next clinical step."],
+              ["03", "Treatment plan", "Explain treatment, prescriptions, investigations or referral recommendations."],
+              ["04", "Follow-up", "Monitor progress and adjust the plan where ongoing review is needed."],
+            ];
+
+            const procedureFocus = [
+              "Blood pressure, glucose, cholesterol and cardiovascular screenings",
+              "Suture removal, wound dressing changes and selected minor biopsies",
+              "Seasonal flu, travel and routine booster vaccinations",
+              "Preventative health audits and early-risk evaluation",
+            ];
+
+            const womensHealthFocus = [
+              "Cervical cancer screening, including Pap smears and HPV testing",
+              "Reproductive health, contraception counselling and selected device insertion or removal",
+              "Routine antenatal, post-natal and maternal wellness support",
+              "Hormonal health, PMS, PCOS and menopause guidance",
+              "Clinical breast examination and referral pathways for mammography where indicated",
+            ];
+
+            return (
+              <>
+                <PageHero
+                  eyebrow="Services"
+                  title="Clinical care with a clearer patient journey."
+                  subtitle="From everyday consultations to preventive screening, procedures and women’s health, care is organised around assessment, explanation, treatment and follow-up."
+                  fixture="clinic"
+                />
+
+                <Section
+                  eyebrow="Clinical care"
+                  title="Services designed around everyday and long-term health needs."
+                  subtitle="The practice combines primary care, prevention and selected procedures with structured follow-up and referral support."
+                >
+                  <ServicesList />
+                </Section>
+
+                <section className="border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
+                  <div className="mx-auto max-w-7xl">
+                    <div className="grid border border-[#bfd5df] lg:grid-cols-[0.9fr_1.1fr]">
+                      <div className="relative min-h-[24rem] overflow-hidden bg-[#081820] lg:min-h-full">
+                        <img src={serviceImages.consultation} alt="Dr Mukudu & Partners clinical service visual" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                        <div className="absolute inset-0 bg-[#081820]/28" />
+                      </div>
+
+                      <div className="p-7 md:p-10">
+                        <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">General medical consultations</p>
+                        <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.04em] text-[#0b2532] md:text-5xl">Assessment, treatment and follow-up for common health needs.</h2>
+                        <p className="mt-6 max-w-3xl text-base leading-8 text-[#40545d]">Consultations cover routine wellness, acute illness, ongoing chronic-care monitoring and proactive health-risk assessment. The goal is to leave each patient with a clear understanding of the clinical plan and what happens next.</p>
+                        <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                          {consultationFocus.map((item) => <div key={item} className="border border-[#bfd5df] bg-[#f7fbfd] p-4 text-sm leading-6 text-[#40545d]">{item}</div>)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid border-x border-b border-[#bfd5df] md:grid-cols-4">
+                      {consultationJourney.map(([number, title, detail]) => (
+                        <article key={title} className="border-b border-[#bfd5df] p-5 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0">
+                          <p className="text-sm font-semibold text-[#1f6f95]">{number}</p>
+                          <h3 className="mt-3 text-lg font-semibold text-[#0b2532]">{title}</h3>
+                          <p className="mt-3 text-sm leading-6 text-[#5a6d76]">{detail}</p>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section className="border-t border-[#bfd5df] bg-[#eef7fa] px-6 py-16 lg:px-10 lg:py-24">
+                  <div className="mx-auto grid max-w-7xl border border-[#bfd5df] bg-white lg:grid-cols-[1.05fr_0.95fr]">
+                    <div className="p-7 md:p-10">
+                      <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">Preventative & procedural care</p>
+                      <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.04em] text-[#0b2532] md:text-5xl">Screening, selected procedures and prevention with structured aftercare.</h2>
+                      <p className="mt-6 text-base leading-8 text-[#40545d]">Patients are assessed before a procedure, cared for using sterile and evidence-based clinical practices, given clear aftercare instructions and scheduled for monitoring where appropriate.</p>
+                      <div className="mt-8 grid gap-3">
+                        {procedureFocus.map((item) => <div key={item} className="grid grid-cols-[2.5rem_1fr] border border-[#bfd5df]"><span className="flex items-center justify-center bg-[#174766] text-sm font-semibold text-white">✓</span><p className="p-4 text-sm leading-6 text-[#40545d]">{item}</p></div>)}
+                      </div>
+                    </div>
+                    <div className="relative min-h-[26rem] overflow-hidden bg-[#081820]">
+                      <img src={serviceImages.procedures} alt="Dr Mukudu & Partners preventative care visual" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                      <div className="absolute inset-0 bg-[#081820]/24" />
+                    </div>
+                  </div>
+                </section>
+
+                <section className="border-t border-[#bfd5df] bg-white px-6 py-16 lg:px-10 lg:py-24">
+                  <div className="mx-auto max-w-7xl">
+                    <div className="grid border border-[#bfd5df] lg:grid-cols-[0.9fr_1.1fr]">
+                      <div className="relative min-h-[26rem] overflow-hidden bg-[#081820]">
+                        <img src={serviceImages.womensHealth} alt="Dr Mukudu & Partners women’s health service visual" className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                        <div className="absolute inset-0 bg-[#081820]/22" />
+                      </div>
+                      <div className="p-7 md:p-10">
+                        <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">Women’s health</p>
+                        <h2 className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.04em] text-[#0b2532] md:text-5xl">Discreet care across reproductive, maternal and hormonal health.</h2>
+                        <p className="mt-6 text-base leading-8 text-[#40545d]">Women’s health consultations begin with medical history and concerns, followed by appropriate examination or screening, clear clinical guidance and ongoing review or referral when needed.</p>
+                        <ul className="mt-8 grid gap-3 text-sm leading-6 text-[#40545d]">
+                          {womensHealthFocus.map((item) => <li key={item} className="border-l-2 border-[#1f6f95] bg-[#f7fbfd] px-4 py-3">{item}</li>)}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="bg-[#081820] px-6 py-16 text-white lg:px-10 lg:py-20">
+                  <div className="mx-auto flex max-w-7xl flex-col gap-8 border border-white/10 bg-[#0b2532] p-7 md:p-10 lg:flex-row lg:items-center lg:justify-between">
+                    <div className="max-w-3xl">
+                      <p className="text-xs font-semibold uppercase tracking-normal text-[#58d6c2]">Preventative care programme</p>
+                      <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] md:text-5xl">Free Male Circumcisions</h2>
+                      <p className="mt-5 text-base leading-8 text-white/68">Dr Mukudu & Partners offers free voluntary medical male circumcision for eligible clients aged 10 years and older, with private consultation, counselling, the procedure and follow-up care.</p>
+                    </div>
+                    <AppLink href="/free-male-circumcision" className="inline-flex shrink-0 items-center gap-2 border border-[#58d6c2] bg-[#58d6c2] px-6 py-3 text-sm font-bold text-[#081820] transition hover:border-white hover:bg-white">View programme details <ArrowIcon size={17} /></AppLink>
+                  </div>
+                </section>
+              </>
+            );
+          }
+
+          function FreeMaleCircumcisionPage() {
+            const pathway = [
+              ["01", "Private pre-procedure consultation", "A medical assessment, informed discussion and HIV prevention counselling help confirm readiness and answer questions."],
+              ["02", "The procedure", "Medical male circumcision is performed by trained clinical professionals under local anaesthesia using sterile clinical practices."],
+              ["03", "Aftercare", "Patients receive clear wound-care, symptom and recovery guidance before leaving the practice."],
+              ["04", "Follow-up", "A scheduled review checks healing and gives the patient an opportunity to raise recovery concerns."],
+            ];
+
+            return (
+              <>
+                <PageHero eyebrow="Free preventative care" title="Free Male Circumcisions" subtitle="Safe, confidential voluntary medical male circumcision with consultation, clinical care and follow-up at Dr Mukudu & Partners." fixture="shield" />
+
+                <Section eyebrow="Programme" title="Free VMMC for eligible clients aged 10 years and older." subtitle="The service is provided as part of a broader HIV-prevention and men’s-health approach. For clients under 18, parent or guardian informed consent is required alongside the young person’s informed assent.">
+                  <div className="grid border border-[#bfd5df] lg:grid-cols-[1.1fr_0.9fr]">
+                    <div className="p-7 md:p-9">
+                      <p className="text-base leading-8 text-[#40545d]">Voluntary medical male circumcision provides partial, long-lasting protection against heterosexually acquired HIV and can reduce the risk of some other sexually transmitted infections. It does not replace condoms, HIV testing, PrEP or other appropriate HIV-prevention measures.</p>
+                      <div className="mt-8 grid gap-3 sm:grid-cols-2">
+                        {["100% free programme service", "Confidential clinical environment", "Local anaesthesia", "Aftercare and follow-up support"].map((item) => <div key={item} className="border border-[#bfd5df] bg-[#eef7fa] p-4 text-sm font-medium text-[#174766]">{item}</div>)}
+                      </div>
+                    </div>
+                    <div className="bg-[#0b2532] p-7 text-white md:p-9">
+                      <p className="text-xs font-semibold uppercase tracking-normal text-[#58d6c2]">Important</p>
+                      <h3 className="mt-4 text-2xl font-semibold">Circumcision is one part of HIV prevention.</h3>
+                      <p className="mt-5 text-sm leading-7 text-white/68">Patients should continue to use the prevention methods recommended for their circumstances and follow the clinical team’s advice during healing.</p>
+                    </div>
+                  </div>
+                </Section>
+
+                <section className="border-t border-[#bfd5df] bg-[#eef7fa] px-6 py-16 lg:px-10 lg:py-24">
+                  <div className="mx-auto max-w-7xl">
+                    <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">Patient pathway</p>
+                    <h2 className="mt-5 max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-[#0b2532] md:text-5xl">Know what happens before, during and after the procedure.</h2>
+                    <div className="mt-10 grid border border-[#bfd5df] bg-white md:grid-cols-2 lg:grid-cols-4">
+                      {pathway.map(([number, title, detail]) => <article key={title} className="border-b border-[#bfd5df] p-6 md:border-r lg:border-b-0 lg:last:border-r-0"><p className="text-sm font-semibold text-[#1f6f95]">{number}</p><h3 className="mt-4 text-xl font-semibold text-[#0b2532]">{title}</h3><p className="mt-4 text-sm leading-7 text-[#5a6d76]">{detail}</p></article>)}
+                    </div>
+                  </div>
+                </section>
+
+                <Section eyebrow="Frequently asked questions" title="Straight answers before you book.">
+                  <div className="grid gap-4 lg:grid-cols-3">
+                    <article className="border border-[#bfd5df] bg-white p-6"><h3 className="text-xl font-semibold text-[#0b2532]">Is it completely free?</h3><p className="mt-4 text-sm leading-7 text-[#5a6d76]">Yes. The practice’s VMMC programme is offered free of charge to eligible clients.</p></article>
+                    <article className="border border-[#bfd5df] bg-white p-6"><h3 className="text-xl font-semibold text-[#0b2532]">How long should I plan for?</h3><p className="mt-4 text-sm leading-7 text-[#5a6d76]">The procedure itself is typically around 30 minutes, but patients should allow roughly 1 to 2 hours for counselling, assessment and post-care instructions. Individual visits can vary.</p></article>
+                    <article className="border border-[#bfd5df] bg-white p-6"><h3 className="text-xl font-semibold text-[#0b2532]">How do I book?</h3><p className="mt-4 text-sm leading-7 text-[#5a6d76]">Use the online booking form or contact the practice for appointment guidance.</p></article>
+                  </div>
+                  <a href="https://redcap.link/DRMUKUDU_FREE_CIRCUMCISION_BOOKING" target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex items-center gap-2 border border-[#174766] bg-[#174766] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#0b2532]">Book your free consultation <ArrowIcon size={17} /></a>
+                </Section>
+              </>
+            );
+          }
+
+          function MedKululaPage() {'''
+
+          pattern = r'function ServicesPage\(\) \{.*?\nfunction MedKululaPage\(\) \{'
+          text, count = re.subn(pattern, services_page, text, count=1, flags=re.S)
+          if count != 1:
+              raise SystemExit('Failed to replace ServicesPage')
+
+          replace_once(
+          '''    "/services": <ServicesPage />,
+            "/medkulula": <MedKululaPage />,''',
+          '''    "/services": <ServicesPage />,
+            "/free-male-circumcision": <FreeMaleCircumcisionPage />,
+            "/medkulula": <MedKululaPage />,''',
+          'route registration')
+
+          replace_once(
+          '''    hasSixNavItems: navItems.length === 6,''',
+          '''    hasSevenNavItems: navItems.length === 7,''',
+          'nav validation')
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Remove temporary extraction workflow
+        run: rm -f .github/workflows/extract-service-docs.yml
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      - name: Commit verified changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/DrMukuduHomepage.jsx .github/workflows/extract-service-docs.yml
+          git commit -m "feat: expand services and add free circumcision page"
+          git push origin feature/services-content-circumcision
