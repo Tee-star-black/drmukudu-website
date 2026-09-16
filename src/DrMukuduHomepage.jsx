@@ -816,9 +816,6 @@ function PageHero({ eyebrow, title, subtitle, fixture = "clinic" }) {
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
   const pathname = window.location.pathname;
-  const primaryNavItems = navItems.filter((item) => ["Home", "About us", "Services", "MedKulula Subscription"].includes(item.label));
-  const secondaryNavItems = navItems.filter((item) => ["Price List", "TeledoctorSA"].includes(item.label));
-  const circumcisionItem = navItems.find((item) => item.label === "Free Male Circumcisions");
 
   React.useEffect(() => {
     function closeMenu() {
@@ -829,144 +826,139 @@ function Header() {
     return () => window.removeEventListener("popstate", closeMenu);
   }, []);
 
-  return (
-    <header className="absolute left-0 right-0 top-0 z-50 border-b border-white/10 bg-[#081820]/72 backdrop-blur-xl">
-      <div className="mx-auto flex min-h-[74px] max-w-[90rem] items-center gap-5 px-4 sm:px-6 lg:px-8 xl:px-10">
-        <AppLink href="/" className="flex min-w-0 shrink-0 items-center gap-3 text-white">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/12 bg-white/[0.04] p-1.5 sm:h-11 sm:w-11">
-            <img
-              src={LOGO_SRC}
-              alt="Dr Mukudu & Partners logo"
-              className="h-full w-full object-contain"
-            />
-          </span>
+  const desktopItems = navItems.map((item) => ({
+    ...item,
+    displayLabel:
+      item.label === "MedKulula Subscription"
+        ? "MedKulula"
+        : item.label === "TeledoctorSA"
+          ? "TDSA"
+          : item.label === "Free Male Circumcisions"
+            ? "Free Circumcision"
+            : item.label,
+  }));
 
-          <span className="hidden min-w-0 sm:block">
-            <span className="block whitespace-nowrap text-[13px] font-semibold tracking-[0.01em]">
+  return (
+    <header className="absolute left-0 right-0 top-0 z-50 border-b border-white/[0.08] bg-[#081820]/42 backdrop-blur-lg">
+      <div className="mx-auto flex min-h-[76px] max-w-[94rem] items-center px-4 sm:px-6 lg:px-8 xl:px-10">
+        <AppLink href="/" className="flex min-w-0 shrink-0 items-center gap-3 text-white">
+          <img
+            src={LOGO_SRC}
+            alt="Dr Mukudu & Partners logo"
+            className="h-10 w-10 shrink-0 object-contain sm:h-11 sm:w-11"
+          />
+
+          <span className="hidden sm:block">
+            <span className="block whitespace-nowrap text-[13px] font-semibold tracking-[0.01em] text-white">
               Dr Mukudu & Partners
             </span>
-            <span className="mt-0.5 block whitespace-nowrap text-[10px] tracking-[0.02em] text-white/48">
+            <span className="mt-0.5 hidden whitespace-nowrap text-[10px] tracking-[0.02em] text-white/42 2xl:block">
               Optimising Health, Optimising Growth
             </span>
           </span>
         </AppLink>
 
-        <div className="hidden min-w-0 flex-1 items-center justify-end gap-2 xl:flex">
-          <nav className="flex items-center border border-white/10 bg-white/[0.035] p-1" aria-label="Main navigation">
-            {primaryNavItems.map((item) => {
-              const isActive = pathname === item.href;
-              const label = item.label === "MedKulula Subscription" ? "MedKulula" : item.label;
-              return (
-                <AppLink
-                  key={item.label}
-                  href={item.href}
-                  className={`whitespace-nowrap px-3.5 py-2 text-[13px] font-medium transition ${
-                    isActive
-                      ? "bg-white text-[#0b2532]"
-                      : "text-white/68 hover:bg-white/[0.07] hover:text-white"
+        <nav className="ml-auto hidden items-center gap-5 xl:flex" aria-label="Main navigation">
+          {desktopItems.map((item) => {
+            const isActive = pathname === item.href;
+            const isCircumcision = item.label === "Free Male Circumcisions";
+            const isExternal = item.href.startsWith("http");
+
+            return (
+              <AppLink
+                key={item.label}
+                href={item.href}
+                className={`group relative inline-flex items-center gap-1.5 whitespace-nowrap py-2 text-[12.5px] font-medium tracking-[0.005em] transition-colors ${
+                  isCircumcision
+                    ? "text-[#76e0cf] hover:text-white"
+                    : isActive
+                      ? "text-white"
+                      : "text-white/62 hover:text-white"
+                }`}
+              >
+                {isCircumcision ? (
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#58d6c2]" aria-hidden="true" />
+                ) : null}
+                <span>{item.displayLabel}</span>
+                {isExternal ? <span className="text-[10px] text-white/34">↗</span> : null}
+                <span
+                  className={`absolute inset-x-0 -bottom-[3px] h-px origin-left bg-[#58d6c2] transition-transform duration-300 ${
+                    isActive || isCircumcision ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
                   }`}
-                >
-                  {label}
-                </AppLink>
-              );
-            })}
+                  aria-hidden="true"
+                />
+              </AppLink>
+            );
+          })}
 
-            <details className="group relative">
-              <summary className="flex cursor-pointer list-none items-center gap-1.5 px-3.5 py-2 text-[13px] font-medium text-white/68 transition hover:bg-white/[0.07] hover:text-white [&::-webkit-details-marker]:hidden">
-                More
-                <span className="text-[10px] transition group-open:rotate-180">⌄</span>
-              </summary>
-              <div className="absolute right-0 top-[calc(100%+0.75rem)] w-52 border border-white/10 bg-[#081820]/98 p-1.5 shadow-2xl backdrop-blur-xl">
-                {secondaryNavItems.map((item) => (
-                  <AppLink
-                    key={item.label}
-                    href={item.href}
-                    className="flex items-center justify-between px-3 py-2.5 text-[13px] text-white/70 transition hover:bg-white/[0.07] hover:text-white"
-                  >
-                    <span>{item.label}</span>
-                    {item.href.startsWith("http") ? <span className="text-white/35">↗</span> : null}
-                  </AppLink>
-                ))}
-                <AppLink
-                  href="/contact"
-                  className="flex items-center justify-between px-3 py-2.5 text-[13px] text-white/70 transition hover:bg-white/[0.07] hover:text-white"
-                >
-                  <span>Contact</span>
-                  <span className="text-white/35">→</span>
-                </AppLink>
-              </div>
-            </details>
-          </nav>
-
-          {circumcisionItem ? (
-            <AppLink
-              href={circumcisionItem.href}
-              className="inline-flex shrink-0 items-center gap-2 border border-[#58d6c2] bg-[#58d6c2] px-4 py-2.5 text-[13px] font-semibold text-[#081820] transition hover:border-white hover:bg-white"
-            >
-              Free Circumcision
-              <ArrowIcon size={14} />
-            </AppLink>
-          ) : null}
+          <span className="h-4 w-px bg-white/12" aria-hidden="true" />
 
           <a
             href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            className="inline-flex shrink-0 items-center gap-2 border border-white/14 px-3.5 py-2.5 text-[13px] font-medium text-white/78 transition hover:border-white/35 hover:bg-white/[0.06] hover:text-white"
+            className="group inline-flex items-center gap-2 whitespace-nowrap py-2 text-[12.5px] font-medium text-white/66 transition-colors hover:text-white"
           >
-            <Icon name="phone" size={15} />
-            WhatsApp
+            <Icon name="phone" size={14} className="text-[#58d6c2]" />
+            <span>WhatsApp</span>
           </a>
-        </div>
+        </nav>
 
         <button
           type="button"
           onClick={() => setMenuOpen((value) => !value)}
-          className="ml-auto inline-flex h-10 w-10 items-center justify-center border border-white/15 bg-white/[0.04] text-white transition hover:bg-white hover:text-[#081820] xl:hidden"
+          className="ml-auto inline-flex h-10 w-10 items-center justify-center text-white/85 transition hover:text-white xl:hidden"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
         >
-          <span className="text-xl leading-none">{menuOpen ? "×" : "☰"}</span>
+          <span className="relative block h-4 w-5" aria-hidden="true">
+            <span className={`absolute left-0 top-0 h-px w-5 bg-current transition ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`} />
+            <span className={`absolute left-0 top-[7px] h-px w-5 bg-current transition ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`absolute left-0 top-[14px] h-px w-5 bg-current transition ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`} />
+          </span>
         </button>
       </div>
 
       {menuOpen ? (
-        <div className="border-t border-white/10 bg-[#081820]/98 px-4 py-4 text-white shadow-2xl backdrop-blur-xl sm:px-6 xl:hidden">
+        <div className="border-t border-white/[0.08] bg-[#081820]/96 px-4 py-5 text-white backdrop-blur-xl sm:px-6 xl:hidden">
           <div className="mx-auto max-w-3xl">
-            <nav className="grid sm:grid-cols-2" aria-label="Mobile navigation">
-              {navItems.map((item) => {
+            <nav aria-label="Mobile navigation">
+              {navItems.map((item, index) => {
                 const isActive = pathname === item.href;
+                const isCircumcision = item.label === "Free Male Circumcisions";
+                const isExternal = item.href.startsWith("http");
+
                 return (
                   <AppLink
                     key={item.label}
                     href={item.href}
                     onClick={() => setMenuOpen(false)}
-                    className={`flex min-h-12 items-center justify-between border-b border-white/8 px-3 py-3 text-sm transition sm:odd:border-r ${
-                      item.emphasis
-                        ? "bg-[#58d6c2] font-semibold text-[#081820]"
+                    className={`group flex items-center justify-between py-3.5 text-sm transition-colors ${
+                      index < navItems.length - 1 ? "border-b border-white/[0.07]" : ""
+                    } ${
+                      isCircumcision
+                        ? "font-semibold text-[#76e0cf]"
                         : isActive
-                          ? "bg-white/[0.08] font-medium text-white"
-                          : "text-white/72 hover:bg-white/[0.05] hover:text-white"
+                          ? "text-white"
+                          : "text-white/68 hover:text-white"
                     }`}
                   >
-                    <span>{item.label}</span>
-                    <span className={item.emphasis ? "text-[#081820]/55" : "text-white/30"}>
-                      {item.href.startsWith("http") ? "↗" : "→"}
+                    <span className="flex items-center gap-2.5">
+                      {isCircumcision ? <span className="h-1.5 w-1.5 rounded-full bg-[#58d6c2]" /> : null}
+                      {item.label}
+                    </span>
+                    <span className="text-white/28 transition group-hover:text-white/55">
+                      {isExternal ? "↗" : "→"}
                     </span>
                   </AppLink>
                 );
               })}
             </nav>
 
-            <div className="grid gap-2 pt-4 sm:grid-cols-2">
-              <a
-                href={`tel:${PHONE_NUMBER}`}
-                className="border border-white/12 px-4 py-3 text-center text-sm font-medium text-white transition hover:bg-white hover:text-[#081820]"
-              >
-                Call {DISPLAY_PHONE}
+            <div className="mt-5 flex flex-col gap-3 border-t border-white/[0.08] pt-5 sm:flex-row sm:items-center sm:justify-between">
+              <a href={`tel:${PHONE_NUMBER}`} className="text-sm font-medium text-white/72 transition hover:text-white">
+                {DISPLAY_PHONE}
               </a>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                className="border border-white bg-white px-4 py-3 text-center text-sm font-semibold text-[#081820] transition hover:bg-[#58d6c2]"
-              >
+              <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="inline-flex items-center gap-2 text-sm font-semibold text-white transition hover:text-[#76e0cf]">
+                <Icon name="phone" size={15} className="text-[#58d6c2]" />
                 WhatsApp practice
               </a>
             </div>
