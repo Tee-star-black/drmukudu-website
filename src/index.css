@@ -13,6 +13,29 @@ footer span:has(> img[alt="Dr Mukudu & Partners logo"]) {
   padding: 0.25rem !important;
 }
 
+/*
+ * Clinical photography treatment
+ *
+ * Keep logos and interface artwork untouched while lifting the actual practice
+ * photography. The small contrast/saturation correction prevents the brighter
+ * exposure from looking washed out on light clinical backgrounds.
+ */
+img[src^="/images/drm/"],
+img[src*="images.unsplash.com"] {
+  filter: brightness(1.16) contrast(1.02) saturate(1.05);
+  transition: filter 240ms ease;
+}
+
+/*
+ * Photo panels use a navy overlay for legibility. The previous homepage image
+ * treatment was considerably darker, so keep enough tint for UI cards/text
+ * while allowing the photography to remain visible.
+ */
+img[src^="/images/drm/"] + div[class*="absolute"][class*="inset-0"],
+img[src*="images.unsplash.com"] + div[class*="absolute"][class*="inset-0"] {
+  background-color: rgba(8, 24, 32, 0.22) !important;
+}
+
 @media (min-width: 640px) {
   header span:has(> img[alt="Dr Mukudu & Partners logo"]) {
     width: 5rem !important;
