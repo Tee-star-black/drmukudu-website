@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://drmukudu.co.za/</loc><lastmod>2026-09-14</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://drmukudu.co.za/about</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://drmukudu.co.za/services</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://drmukudu.co.za/medkulula</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://drmukudu.co.za/price-list</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://drmukudu.co.za/contact</loc><lastmod>2026-09-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://drmukudu.co.za/privacy-policy</loc><lastmod>2026-09-14</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://drmukudu.co.za/terms-and-conditions</loc><lastmod>2026-09-14</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://drmukudu.co.za/cookie-policy.html</loc><lastmod>2026-09-14</lastmod><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://drmukudu.co.za/</loc><lastmod>2026-09-17</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://drmukudu.co.za/about</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://drmukudu.co.za/services</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://drmukudu.co.za/services/general-medical-consultations</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://drmukudu.co.za/services/preventative-procedural-care</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://drmukudu.co.za/services/womens-health</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://drmukudu.co.za/free-male-circumcision</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://drmukudu.co.za/medkulula</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://drmukudu.co.za/price-list</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://drmukudu.co.za/contact</loc><lastmod>2026-09-17</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://drmukudu.co.za/privacy-policy</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/terms-and-conditions</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/legal-notice</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/cancellation-and-refund-policy</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/service-fulfilment-policy</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/governing-law-and-jurisdiction</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://drmukudu.co.za/cookie-policy</loc><lastmod>2026-09-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
