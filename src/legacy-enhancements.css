@@ -1,0 +1,121 @@
+#legacy-home-subscription-mount {
+  position: relative;
+  z-index: 5;
+}
+
+.legacy-subscription-mini {
+  border-top: 1px solid #bfd5df;
+  background: #f6f9fa;
+  padding: 2.25rem 1.25rem 2.5rem;
+}
+
+.legacy-subscription-mini__inner {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  gap: 1.25rem;
+  align-items: end;
+}
+
+.legacy-subscription-mini__eyebrow {
+  margin: 0 0 0.55rem;
+  color: #6c8aa0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.legacy-subscription-mini h2 {
+  margin: 0;
+  color: #081820;
+  font-family: Manrope, Inter, system-ui, sans-serif;
+  font-size: clamp(1.7rem, 3vw, 2.35rem);
+  font-weight: 550;
+  letter-spacing: -0.035em;
+}
+
+.legacy-subscription-mini__copy > p:last-child {
+  max-width: 42rem;
+  margin: 0.7rem 0 0;
+  color: #5a6d76;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.legacy-subscription-mini__plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid #d6e4ea;
+  background: #fff;
+}
+
+.legacy-subscription-mini__plans span {
+  display: flex;
+  min-height: 4.35rem;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.85rem 1rem;
+  color: #5a6d76;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.legacy-subscription-mini__plans span + span {
+  border-left: 1px solid #d6e4ea;
+}
+
+.legacy-subscription-mini__plans strong {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: #174766;
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+
+.legacy-subscription-mini__link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.45rem;
+  border-bottom: 1px solid #174766;
+  color: #174766;
+  font-size: 0.88rem;
+  font-weight: 650;
+  line-height: 1.6;
+  text-decoration: none;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.legacy-subscription-mini__link:hover,
+.legacy-subscription-mini__link:focus-visible {
+  border-color: #58d6c2;
+  color: #0b2532;
+  outline: none;
+}
+
+@media (min-width: 900px) {
+  .legacy-subscription-mini {
+    padding: 2.6rem 1.5rem 2.8rem;
+  }
+
+  .legacy-subscription-mini__inner {
+    grid-template-columns: minmax(0, 1.25fr) minmax(22rem, 0.95fr) auto;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .legacy-subscription-mini {
+    padding: 1.9rem 1rem 2.15rem;
+  }
+
+  .legacy-subscription-mini__plans {
+    grid-template-columns: 1fr;
+  }
+
+  .legacy-subscription-mini__plans span + span {
+    border-left: 0;
+    border-top: 1px solid #d6e4ea;
+  }
+}

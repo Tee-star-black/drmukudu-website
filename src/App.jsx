@@ -1,5 +1,5 @@
-import ProductionSite from "./ProductionSite";
+import LegacySiteWrapper from "./LegacySiteWrapper";
 
 export default function App() {
-  return <ProductionSite />;
+  return <LegacySiteWrapper />;
 }
