@@ -1,0 +1,13 @@
+RewriteEngine On
+
+Redirect 301 /about-us /about
+Redirect 301 /medkulula-subscription-plan /medkulula
+Redirect 301 /student-medkulula-subscrition-plan /medkulula
+Redirect 301 /privacy /privacy-policy
+Redirect 301 /terms-and-conditions-for-medkulula-subscription-plans /terms-and-conditions
+Redirect 301 /cancelation-and-refund-policy /cancellation-and-refund-policy
+Redirect 301 /cookie-policy.html /cookie-policy
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
