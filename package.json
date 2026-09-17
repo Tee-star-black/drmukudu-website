@@ -6,7 +6,7 @@
   "scripts": {
     "brand": "node scripts/prepare-brand-assets.mjs",
     "dev": "npm run brand && vite",
-    "build": "npm run brand && vite build",
+    "build": "npm run brand && vite build && node scripts/prerender-routes.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
   },
