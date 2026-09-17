@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    { "source": "/about-us", "destination": "/about", "permanent": true },
+    { "source": "/medkulula-subscription-plan", "destination": "/medkulula", "permanent": true },
+    { "source": "/student-medkulula-subscrition-plan", "destination": "/medkulula", "permanent": true },
+    { "source": "/privacy", "destination": "/privacy-policy", "permanent": true },
+    { "source": "/terms-and-conditions-for-medkulula-subscription-plans", "destination": "/terms-and-conditions", "permanent": true },
+    { "source": "/cancelation-and-refund-policy", "destination": "/cancellation-and-refund-policy", "permanent": true },
+    { "source": "/cookie-policy.html", "destination": "/cookie-policy", "permanent": true }
+  ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
