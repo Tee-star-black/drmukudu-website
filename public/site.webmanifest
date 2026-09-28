@@ -7,7 +7,7 @@
   "theme_color": "#081820",
   "icons": [
     {
-      "src": "/images/DrMp.png",
+      "src": "/favicon.png",
       "sizes": "any",
       "type": "image/png"
     }
