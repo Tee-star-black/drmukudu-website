@@ -145,40 +145,73 @@ const seoPages = {
   "/terms-and-conditions": {
     title: "Terms and Conditions | Dr Mukudu & Partners",
     description:
-      "Read the terms and conditions for Dr Mukudu & Partners and MedKulula subscription services.",
+      "Read the terms that apply to Dr Mukudu & Partners website use, healthcare services and MedKulula subscription services.",
     keywords:
       "Dr Mukudu terms, MedKulula terms, medical practice terms and conditions",
+  },
+  "/legal-notice": {
+    title: "Legal Notice & Healthcare Compliance | Dr Mukudu & Partners",
+    description:
+      "Read the legal, privacy and healthcare-compliance information that applies to Dr Mukudu & Partners and its digital services in South Africa.",
+    keywords:
+      "Dr Mukudu legal notice, healthcare compliance South Africa, POPIA medical practice",
+  },
+  "/cancellation-and-refund-policy": {
+    title: "Cancellation & Refund Policy | Dr Mukudu & Partners",
+    description:
+      "Review cancellation and refund terms that may apply to eligible Dr Mukudu & Partners services and MedKulula subscriptions.",
+    keywords:
+      "Dr Mukudu cancellation policy, MedKulula refund policy, healthcare subscription cancellation",
+  },
+  "/service-fulfilment-policy": {
+    title: "Service Fulfilment Policy | Dr Mukudu & Partners",
+    description:
+      "Learn how Dr Mukudu & Partners and MedKulula healthcare services are activated, scheduled and delivered in person or digitally.",
+    keywords:
+      "Dr Mukudu service fulfilment, MedKulula service delivery, healthcare service activation",
+  },
+  "/governing-law-and-jurisdiction": {
+    title: "Governing Law & Jurisdiction | Dr Mukudu & Partners",
+    description:
+      "Learn which South African laws and courts govern the Dr Mukudu & Partners website, services and MedKulula terms.",
+    keywords:
+      "Dr Mukudu governing law, South Africa jurisdiction, MedKulula legal terms",
+  },
+  "/cookie-policy": {
+    title: "Cookie & Analytics Policy | Dr Mukudu & Partners",
+    description:
+      "Learn how Dr Mukudu & Partners uses essential browser storage and optional analytics, and how you can manage your cookie preferences.",
+    keywords:
+      "Dr Mukudu cookie policy, analytics policy, website privacy, cookie preferences",
   },
 };
 
 const footerSections = [
   {
-    title: "Practice",
+    title: "Patient care",
     links: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about" },      { label: "Services", href: "/services" },
-  { label: "Free Male Circumcisions", href: "/free-male-circumcision" },
-  { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },
+      { label: "Medical Services", href: "/services" },
+      { label: "GP Consultations", href: "/services/general-medical-consultations" },
+      { label: "Women’s Health", href: "/services/womens-health" },
+      { label: "Free Male Circumcision", href: "/free-male-circumcision" },
+      { label: "Contact & Booking", href: "/contact" },
     ],
   },
   {
     title: "Plans & pricing",
     links: [
-      { label: "MedKulula Plan", href: "/medkulula" },
-      { label: "Student Plan", href: "/medkulula" },
-      { label: "Price list", href: "/price-list" },
-      { label: "Contact", href: "/contact" },
+      { label: "Price List", href: "/price-list" },
+      { label: "MedKulula", href: "/medkulula" },
+      { label: "About the Practice", href: "/about" },
+      { label: "TeledoctorSA", href: "https://teledoctorsa.co.za/" },
     ],
   },
   {
     title: "Legal",
     links: [
-      { label: "Legal Notice", href: "/legal-notice" },
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms and Conditions", href: "/terms-and-conditions" },
-      { label: "Cancelation and Refund Policy", href: "/cancellation-and-refund-policy" },
-      { label: "Service Fulfilment Policy", href: "/service-fulfilment-policy" },
-      { label: "Governing Law and Jurisdiction", href: "/governing-law-and-jurisdiction" },
+      { label: "Legal Notice", href: "/legal-notice" },
     ],
   },
 ];
@@ -330,7 +363,7 @@ const legalPages = {
   "/legal-notice": {
     eyebrow: "Legal",
     title: "Legal Notice",
-    subtitle: "Important information about the use of this website.",
+    subtitle: "Legal, privacy and healthcare-compliance information for Dr Mukudu & Partners and its digital services in South Africa.",
     sections: [
       {
         heading: "1. Protection of Personal Information Act (POPIA - South Africa)",
@@ -650,7 +683,7 @@ const legalPages = {
       {
         heading: "Governing Law and Jurisdiction",
         paragraphs: [
-          "This website, including all its services and MedKulula subscription plans provided through Dr Mukudu and Partners, is governed by the laws of the Republic of South Africa.",
+          "Dr Mukudu & Partners operates in South Africa, and its website, healthcare services and MedKulula subscription terms are governed by the laws of the Republic of South Africa.",
           "The business is domiciled in South Africa. By using this website, you agree that any dispute arising from or relating to these terms will be resolved exclusively in the courts of the Republic of South Africa.",
         ],
       },
