@@ -87,6 +87,7 @@ const serviceDetails = {
 
 const priceItems = [
   ["GP Consultation", "R500"],
+  ["GP Consultation + Medication", "R800"],
   ["Medical Report", "R500"],
   ["Review", "R250"],
   ["Referral", "R250"],
