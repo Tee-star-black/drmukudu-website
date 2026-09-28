@@ -18,13 +18,13 @@ const pages = {
   '/medkulula': ['MedKulula Subscription | Dr Mukudu & Partners', 'Affordable monthly primary healthcare plans for individuals, students and dependants.'],
   '/price-list': ['Price List | Dr Mukudu & Partners', 'Published practice pricing for consultations and selected services at Dr Mukudu & Partners.'],
   '/contact': ['Contact Dr Mukudu & Partners | Tulisa Park', 'Call, WhatsApp or get directions to Dr Mukudu & Partners at 29 Landor Street, Tulisa Park, Johannesburg South.'],
-  '/privacy-policy': ['Privacy Policy | Dr Mukudu & Partners', 'Privacy and POPIA information for the Dr Mukudu & Partners website.'],
-  '/terms-and-conditions': ['Terms and Conditions | Dr Mukudu & Partners', 'Terms and conditions for Dr Mukudu & Partners and related subscription services.'],
-  '/legal-notice': ['Legal Notice | Dr Mukudu & Partners', 'Important legal information about the Dr Mukudu & Partners website.'],
-  '/cancellation-and-refund-policy': ['Cancellation and Refund Policy | Dr Mukudu & Partners', 'Cancellation and refund policy for eligible Dr Mukudu & Partners services and subscriptions.'],
-  '/service-fulfilment-policy': ['Service Fulfilment Policy | Dr Mukudu & Partners', 'Service fulfilment information for Dr Mukudu & Partners.'],
-  '/governing-law-and-jurisdiction': ['Governing Law and Jurisdiction | Dr Mukudu & Partners', 'Governing law and jurisdiction information for Dr Mukudu & Partners.'],
-  '/cookie-policy': ['Cookie Policy | Dr Mukudu & Partners', 'Cookie and analytics policy for the Dr Mukudu & Partners website.'],
+  '/privacy-policy': ['Privacy Policy | Dr Mukudu & Partners', 'Learn how Dr Mukudu & Partners handles personal information, patient privacy, POPIA obligations and website data in South Africa.'],
+  '/terms-and-conditions': ['Terms and Conditions | Dr Mukudu & Partners', 'Read the terms that apply to Dr Mukudu & Partners website use, healthcare services and MedKulula subscription services.'],
+  '/legal-notice': ['Legal Notice & Healthcare Compliance | Dr Mukudu & Partners', 'Read the legal, privacy and healthcare-compliance information that applies to Dr Mukudu & Partners and its digital services in South Africa.'],
+  '/cancellation-and-refund-policy': ['Cancellation & Refund Policy | Dr Mukudu & Partners', 'Review cancellation and refund terms that may apply to eligible Dr Mukudu & Partners services and MedKulula subscriptions.'],
+  '/service-fulfilment-policy': ['Service Fulfilment Policy | Dr Mukudu & Partners', 'Learn how Dr Mukudu & Partners and MedKulula healthcare services are activated, scheduled and delivered in person or digitally.'],
+  '/governing-law-and-jurisdiction': ['Governing Law & Jurisdiction | Dr Mukudu & Partners', 'Learn which South African laws and courts govern the Dr Mukudu & Partners website, services and MedKulula terms.'],
+  '/cookie-policy': ['Cookie & Analytics Policy | Dr Mukudu & Partners', 'Learn how Dr Mukudu & Partners uses essential browser storage and optional analytics, and how you can manage your cookie preferences.'],
 };
 
 function esc(value) {
@@ -58,7 +58,8 @@ for (const [path, [title, description]] of Object.entries(pages)) {
 const today = new Date().toISOString().slice(0, 10);
 const urls = Object.keys(pages).map((path) => {
   const loc = `${siteUrl}${path === '/' ? '/' : path}`;
-  const priority = path === '/' ? '1.0' : path.startsWith('/services') || path === '/free-male-circumcision' ? '0.9' : path === '/contact' || path === '/medkulula' ? '0.8' : '0.5';
+  const legalPaths = ['/privacy-policy', '/terms-and-conditions', '/legal-notice', '/cancellation-and-refund-policy', '/service-fulfilment-policy', '/governing-law-and-jurisdiction', '/cookie-policy'];
+  const priority = path === '/' ? '1.0' : path.startsWith('/services') || path === '/free-male-circumcision' ? '0.9' : path === '/contact' || path === '/medkulula' || path === '/price-list' ? '0.8' : legalPaths.includes(path) ? '0.3' : '0.6';
   return `  <url><loc>${loc}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${priority}</priority></url>`;
 }).join('\n');
 
