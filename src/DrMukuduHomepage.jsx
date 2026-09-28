@@ -3144,6 +3144,14 @@ function FreeMaleCircumcisionPage() {
       <PageHero eyebrow="Free preventative care" title="Free Male Circumcisions" subtitle="Safe, confidential voluntary medical male circumcision with consultation, clinical care and follow-up at Dr Mukudu & Partners." fixture="shield" />
 
       <Section eyebrow="Programme" title="Free VMMC for eligible clients aged 10 years and older." subtitle="The service is provided as part of a broader HIV-prevention and men’s-health approach. For clients under 18, parent or guardian informed consent is required alongside the young person’s informed assent.">
+        <div className="mb-8 overflow-hidden border border-[#bfd5df] bg-[#eef7fa]">
+          <img
+            src="/images/drm/circumcision-programme-clinic.webp"
+            alt="Medical practitioner in a modern clinic supporting the free male circumcision programme"
+            className="h-[260px] w-full object-cover object-center sm:h-[340px] lg:h-[430px]"
+            loading="eager"
+          />
+        </div>
         <div className="grid border border-[#bfd5df] lg:grid-cols-[1.1fr_0.9fr]">
           <div className="p-7 md:p-9">
             <p className="text-base leading-8 text-[#40545d]">Voluntary medical male circumcision provides partial, long-lasting protection against heterosexually acquired HIV and can reduce the risk of some other sexually transmitted infections. It does not replace condoms, HIV testing, PrEP or other appropriate HIV-prevention measures.</p>
@@ -3163,7 +3171,15 @@ function FreeMaleCircumcisionPage() {
         <div className="mx-auto max-w-7xl">
           <p className="text-xs font-semibold uppercase tracking-normal text-[#1f6f95]">Patient pathway</p>
           <h2 className="mt-5 max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-[#0b2532] md:text-5xl">Know what happens before, during and after the procedure.</h2>
-          <div className="mt-10 grid border border-[#bfd5df] bg-white md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 overflow-hidden border border-[#bfd5df] bg-white">
+            <img
+              src="/images/drm/circumcision-procedure-preparation.webp"
+              alt="Clinical instruments prepared for a circumcision procedure"
+              className="h-[250px] w-full bg-white object-contain sm:h-[330px] lg:h-[390px]"
+              loading="lazy"
+            />
+          </div>
+          <div className="mt-6 grid border border-[#bfd5df] bg-white md:grid-cols-2 lg:grid-cols-4">
             {pathway.map(([number, title, detail]) => <article key={title} className="border-b border-[#bfd5df] p-6 md:border-r lg:border-b-0 lg:last:border-r-0"><p className="text-sm font-semibold text-[#1f6f95]">{number}</p><h3 className="mt-4 text-xl font-semibold text-[#0b2532]">{title}</h3><p className="mt-4 text-sm leading-7 text-[#5a6d76]">{detail}</p></article>)}
           </div>
         </div>
