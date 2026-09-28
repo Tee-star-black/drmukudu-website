@@ -48,6 +48,38 @@ export default function LegacySiteWrapper() {
   React.useEffect(() => {
     let frame = 0;
 
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("motion-in-view");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    const registerMotion = () => {
+      const revealTargets = [
+        ...document.querySelectorAll("main section"),
+        ...document.querySelectorAll("main article"),
+        ...document.querySelectorAll("main img"),
+      ];
+
+      revealTargets.forEach((node, index) => {
+        if (node.closest(".fixed, .mobile-actions")) return;
+        if (!node.classList.contains("motion-reveal")) {
+          node.classList.add("motion-reveal");
+          node.style.setProperty("--motion-order", String(index % 6));
+          revealObserver.observe(node);
+        }
+      });
+
+      document.querySelectorAll("main a, main button").forEach((node) => {
+        node.classList.add("motion-interactive");
+      });
+    };
+
     const applyEnhancements = () => {
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
@@ -118,6 +150,8 @@ export default function LegacySiteWrapper() {
             directionsLink.rel = "noopener noreferrer";
           }
         }
+
+        registerMotion();
       });
     };
 
@@ -130,6 +164,7 @@ export default function LegacySiteWrapper() {
 
     return () => {
       observer.disconnect();
+      revealObserver.disconnect();
       window.removeEventListener("popstate", applyEnhancements);
       window.cancelAnimationFrame(frame);
     };
