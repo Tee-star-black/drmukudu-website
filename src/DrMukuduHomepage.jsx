@@ -278,10 +278,12 @@ const collaborativeCare = [
 ];
 
 const priceItems = [
-  { service: "GP Consultation", price: "To be confirmed", note: "In-practice consultation with a medical practitioner." },
-  { service: "Women’s Health Consultation", price: "To be confirmed", note: "Contraceptive care, reproductive health and wellness support." },
+  { service: "GP Consultation", price: "R500", note: "In-practice consultation with a medical practitioner." },
+  { service: "GP Consultation + Medication", price: "R800", note: "Consultation including medication supplied by the practice where clinically appropriate." },
+  { service: "Family Planning", price: "R320", note: "Family-planning consultation and contraceptive care." },
+  { service: "Women’s Health", price: "Price varies by service", note: "Women’s health care can involve different consultations, procedures and investigations. Contact the practice for service-specific pricing." },
   { service: "Medical Male Circumcision", price: "Free", note: "Offered through public health-supported programmes where applicable." },
-  { service: "MedKulula Subscription", price: "To be confirmed", note: "Affordable subscription-based access to primary healthcare." },
+  { service: "MedKulula Subscription", price: "From R200/month", note: "Subscription options are available for students, individuals and dependants." },
 ];
 
 const medkululaPlans = [
@@ -3197,7 +3199,7 @@ function MedKululaPage() {
 }
 
 function PriceListPage() {
-  return (<><PageHero eyebrow="Pricing" title="Price List" subtitle="Clear pricing information for consultations and selected services." fixture="monitor" /><Section eyebrow="Pricing" title="Transparent pricing details." subtitle="Final pricing can be updated here once confirmed by the practice."><div className="overflow-hidden rounded-lg border border-[#d8e5ec] bg-white shadow-[0_12px_40px_rgba(18,63,85,0.05)]"><div className="divide-y divide-[#d8e5ec]">{priceItems.map((item) => <div key={item.service} className="grid gap-4 p-5 md:grid-cols-[1fr_12rem] md:items-center md:p-6"><div><h3 className="font-[Manrope,Inter,system-ui,sans-serif] text-xl font-medium tracking-normal text-[#174766]">{item.service}</h3><p className="mt-2 text-sm leading-7 text-[#5a6d76]">{item.note}</p></div><p className="text-base font-medium text-[#17211f] md:text-right">{item.price}</p></div>)}</div></div></Section><Section eyebrow="Booking" title="Confirm pricing before your visit." tone="dark"><p className="max-w-2xl text-base leading-7 text-white/70">For the most accurate pricing, patients are encouraged to contact the practice directly before booking.</p></Section></>);
+  return (<><PageHero eyebrow="Pricing" title="Price List" subtitle="Clear pricing information for consultations and selected services." fixture="monitor" /><Section eyebrow="Pricing" title="Transparent pricing details." subtitle="Published pricing for common consultations and selected services."><div className="overflow-hidden rounded-lg border border-[#d8e5ec] bg-white shadow-[0_12px_40px_rgba(18,63,85,0.05)]"><div className="divide-y divide-[#d8e5ec]">{priceItems.map((item) => <div key={item.service} className="grid gap-4 p-5 md:grid-cols-[1fr_12rem] md:items-center md:p-6"><div><h3 className="font-[Manrope,Inter,system-ui,sans-serif] text-xl font-medium tracking-normal text-[#174766]">{item.service}</h3><p className="mt-2 text-sm leading-7 text-[#5a6d76]">{item.note}</p></div><p className="text-base font-medium text-[#17211f] md:text-right">{item.price}</p></div>)}</div></div></Section><Section eyebrow="Booking" title="Confirm pricing before your visit." tone="dark"><p className="max-w-2xl text-base leading-7 text-white/70">For the most accurate pricing, patients are encouraged to contact the practice directly before booking.</p></Section></>);
 }
 
 function ContactPage() {
