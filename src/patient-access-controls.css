@@ -1,0 +1,158 @@
+/* Persistent patient shortcuts shared by every page of the active site. */
+.drm-patient-app-desktop {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9000;
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid #58d6c2;
+  padding: 0 17px;
+  background: #0b2532;
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(8, 24, 32, 0.22);
+  font: 650 13px/1.2 Manrope, Inter, system-ui, sans-serif;
+  text-decoration: none;
+  transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.drm-patient-app-desktop:hover {
+  transform: translateY(-2px);
+  background: #58d6c2;
+  color: #081820;
+}
+
+.drm-cookie-banner {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 20000;
+  display: grid;
+  width: min(680px, calc(100vw - 260px));
+  max-height: calc(100dvh - 48px);
+  gap: 18px;
+  overflow-y: auto;
+  border: 1px solid rgba(88, 214, 194, 0.45);
+  padding: 22px;
+  background: #081820;
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(8, 24, 32, 0.36);
+  font-family: Manrope, Inter, system-ui, sans-serif;
+}
+
+.drm-cookie-banner h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.drm-cookie-banner p {
+  margin: 9px 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.drm-cookie-banner p a {
+  color: #73dfcf;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.drm-cookie-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.drm-cookie-actions button {
+  min-height: 42px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 0 16px;
+  background: transparent;
+  color: #fff;
+  font: 700 12px/1.2 Manrope, Inter, system-ui, sans-serif;
+}
+
+.drm-cookie-actions button:hover {
+  border-color: #58d6c2;
+}
+
+.drm-cookie-actions .drm-cookie-accept {
+  border-color: #58d6c2;
+  background: #58d6c2;
+  color: #081820;
+}
+
+.drm-cookie-actions .drm-cookie-accept:hover {
+  background: #73dfcf;
+}
+
+.drm-cookie-settings {
+  position: fixed;
+  left: 18px;
+  bottom: 18px;
+  z-index: 9000;
+  min-height: 36px;
+  cursor: pointer;
+  border: 1px solid rgba(8, 24, 32, 0.2);
+  padding: 0 12px;
+  background: #fff;
+  color: #081820;
+  box-shadow: 0 10px 30px rgba(8, 24, 32, 0.14);
+  font: 700 11px/1.2 Manrope, Inter, system-ui, sans-serif;
+}
+
+.drm-patient-app-desktop:focus-visible,
+.drm-cookie-settings:focus-visible,
+.drm-cookie-actions button:focus-visible,
+.drm-cookie-banner a:focus-visible {
+  outline: 3px solid #58d6c2;
+  outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+  .drm-patient-app-desktop {
+    display: none;
+  }
+
+  .drm-cookie-banner {
+    left: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 100px - env(safe-area-inset-bottom));
+    padding: 18px;
+  }
+
+  .drm-cookie-settings {
+    left: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 460px) {
+  .drm-cookie-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .drm-cookie-actions button {
+    padding: 10px 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drm-patient-app-desktop {
+    transition: none;
+  }
+
+  .drm-patient-app-desktop:hover {
+    transform: none;
+  }
+}
