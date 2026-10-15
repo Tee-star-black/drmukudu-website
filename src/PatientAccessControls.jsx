@@ -5,8 +5,28 @@ const PATIENT_APP_URL = "https://patient.drmukudu.co.za/install";
 const CONSENT_KEY = "drmukudu_cookie_consent_v2";
 const ANALYTICS_ID = "G-21WWHMKVBT";
 
+const CONSENT_FIELDS = {
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+};
+
+function updateAnalyticsConsent(accepted) {
+  // Stop further measurement immediately, including after consent is revoked.
+  window[`ga-disable-${ANALYTICS_ID}`] = !accepted;
+  if (typeof window.gtag === "function") {
+    window.gtag("consent", "update", {
+      ...CONSENT_FIELDS,
+      analytics_storage: accepted ? "granted" : "denied",
+    });
+  }
+}
+
 function enableOptionalAnalytics() {
-  if (window.__drMukuduAnalyticsLoaded) return;
+  if (window.__drMukuduAnalyticsLoaded) {
+    updateAnalyticsConsent(true);
+    return;
+  }
 
   window.__drMukuduAnalyticsLoaded = true;
   window.dataLayer = window.dataLayer || [];
@@ -14,13 +34,13 @@ function enableOptionalAnalytics() {
     window.dataLayer.push(arguments);
   };
 
-  window.gtag("js", new Date());
+  // Basic consent mode: queue denied defaults BEFORE granting an opt-in.
   window.gtag("consent", "default", {
-    analytics_storage: "granted",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
+    ...CONSENT_FIELDS,
+    analytics_storage: "denied",
   });
+  updateAnalyticsConsent(true);
+  window.gtag("js", new Date());
   window.gtag("config", ANALYTICS_ID, { anonymize_ip: true });
 
   const script = document.createElement("script");
@@ -56,15 +76,20 @@ export default function PatientAccessControls() {
     const previousChoice = readConsent();
     if (previousChoice === "accepted") {
       enableOptionalAnalytics();
-    } else if (previousChoice !== "rejected") {
-      setIsConsentOpen(true);
+    } else {
+      updateAnalyticsConsent(false);
+      if (previousChoice !== "rejected") setIsConsentOpen(true);
     }
   }, []);
 
   function selectConsent(choice) {
     saveConsent(choice);
     setIsConsentOpen(false);
-    if (choice === "accepted") enableOptionalAnalytics();
+    if (choice === "accepted") {
+      enableOptionalAnalytics();
+    } else {
+      updateAnalyticsConsent(false);
+    }
   }
 
   return (

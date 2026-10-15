@@ -3,12 +3,7 @@ import { createPortal } from "react-dom";
 import DrMukuduHomepage from "./DrMukuduHomepage";
 import "./legacy-enhancements.css";
 
-const WHATSAPP_NUMBER = "27615471346";
 const PATIENT_APP = "https://patient.drmukudu.co.za/install";
-
-function whatsappUrl(message) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
 
 function CompactSubscription() {
   return (
@@ -35,12 +30,6 @@ function CompactSubscription() {
     </section>
   );
 }
-
-const serviceBookingMessages = {
-  "/services/general-medical-consultations": "Good day, Dr Mukudu & Partners. I would like to arrange a general medical consultation.",
-  "/services/preventative-procedural-care": "Good day, Dr Mukudu & Partners. I would like to arrange a preventative or procedural care consultation.",
-  "/services/womens-health": "Good day, Dr Mukudu & Partners. I would like to arrange a women's health consultation.",
-};
 
 export default function LegacySiteWrapper() {
   const [subscriptionMount, setSubscriptionMount] = React.useState(null);
@@ -107,14 +96,7 @@ export default function LegacySiteWrapper() {
             setSubscriptionMount((current) => (current === mount ? current : mount));
           }
 
-          const bookingLinks = Array.from(document.querySelectorAll("a")).filter((link) =>
-            /book appointment/i.test(link.textContent || ""),
-          );
-          bookingLinks.forEach((link) => {
-            link.href = whatsappUrl("Good day, Dr Mukudu & Partners. I would like to make an appointment enquiry.");
-            link.target = "_blank";
-            link.rel = "noopener noreferrer";
-          });
+
         } else {
           if (oldSubscription) {
             oldSubscription.style.display = "";
@@ -125,16 +107,6 @@ export default function LegacySiteWrapper() {
           setSubscriptionMount(null);
         }
 
-        const bookingMessage = serviceBookingMessages[pathname];
-        if (bookingMessage) {
-          Array.from(document.querySelectorAll("a")).forEach((link) => {
-            if (/arrange a consultation/i.test(link.textContent || "")) {
-              link.href = whatsappUrl(bookingMessage);
-              link.target = "_blank";
-              link.rel = "noopener noreferrer";
-            }
-          });
-        }
 
         const mobileActionBar = Array.from(document.querySelectorAll("div.fixed")).find((node) =>
           node.className.includes("bottom-0"),

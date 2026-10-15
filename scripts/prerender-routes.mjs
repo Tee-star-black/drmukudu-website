@@ -1,6 +1,9 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
+import { createServer } from 'vite';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = resolve(root, 'dist');
@@ -44,15 +47,48 @@ function replaceMeta(html, path, title, description) {
     .replace(/<meta name="twitter:description" content="[^"]*"\s*\/?>/, `<meta name="twitter:description" content="${esc(description)}" />`);
 }
 
-for (const [path, [title, description]] of Object.entries(pages)) {
-  const html = replaceMeta(source, path, title, description);
-  if (path === '/') {
-    writeFileSync(resolve(dist, 'index.html'), html, 'utf8');
-    continue;
+// Render actual page content at build time. Previously we only cloned the
+// empty SPA shell, so crawlers could see metadata but not the medical content.
+const vite = await createServer({
+  configFile: resolve(root, 'vite.config.js'),
+  server: { middlewareMode: true, hmr: false },
+  appType: 'custom',
+  logLevel: 'error',
+});
+
+try {
+  const { default: App } = await vite.ssrLoadModule('/src/App.jsx');
+
+  for (const [path, [title, description]] of Object.entries(pages)) {
+    // The existing route component uses window.location.pathname at render time.
+    // Supply only the minimum location shape for server rendering. No effects run.
+    globalThis.window = { location: { pathname: path } };
+    const markup = renderToString(React.createElement(App));
+
+    if (!/<h1[\s>]/i.test(markup) || markup.includes('This page does not exist.')) {
+      throw new Error(`Page ${path} failed to produce a valid prerendered page`);
+    }
+
+    const html = replaceMeta(source, path, title, description).replace(
+      '<div id="root"></div>',
+      `<div id="root">${markup}</div>`,
+    );
+
+    if (html === source || !html.includes(`<div id="root">${markup}</div>`)) {
+      throw new Error(`Failed to inject page content into ${path}`);
+    }
+
+    if (path === '/') {
+      writeFileSync(resolve(dist, 'index.html'), html, 'utf8');
+    } else {
+      const target = resolve(dist, `.${path}`, 'index.html');
+      mkdirSync(dirname(target), { recursive: true });
+      writeFileSync(target, html, 'utf8');
+    }
   }
-  const target = resolve(dist, `.${path}`, 'index.html');
-  mkdirSync(dirname(target), { recursive: true });
-  writeFileSync(target, html, 'utf8');
+} finally {
+  delete globalThis.window;
+  await vite.close();
 }
 
 const today = new Date().toISOString().slice(0, 10);
@@ -65,4 +101,4 @@ const urls = Object.keys(pages).map((path) => {
 
 writeFileSync(resolve(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`, 'utf8');
 
-console.log(`Prerendered ${Object.keys(pages).length} public routes and regenerated sitemap.xml`);
+console.log(`SSR-prerendered ${Object.keys(pages).length} public routes with full page content and regenerated sitemap.xml`);

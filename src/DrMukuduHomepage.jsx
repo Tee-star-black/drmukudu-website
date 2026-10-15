@@ -341,8 +341,8 @@ const medkululaPlans = [
     price: "R200",
     cadence: "per month",
     description: "A student-focused subscription plan created to make access to care more affordable.",
-    cta: "Student subscription form",
-    href: "https://redcap.link/Student_MedKulula_Subscription",
+    cta: "Enquire about student enrolment",
+    href: "https://wa.me/27615471346?text=Good%20day%2C%20I%20would%20like%20to%20enquire%20about%20the%20MedKulula%20Student%20Plan.",
   },
 ];
 
@@ -675,6 +675,34 @@ const legalPages = {
       },
     ],
   },
+  "/cookie-policy": {
+    eyebrow: "Privacy",
+    title: "Cookie & Analytics Policy",
+    subtitle: "How browser storage and optional website analytics work, and how to change your preferences.",
+    sections: [
+      {
+        heading: "Essential browser storage",
+        paragraphs: [
+          "Dr Mukudu & Partners uses essential browser storage to remember your privacy preferences so you do not need to make the same choice on every visit.",
+          "You can reject optional analytics without losing access to the website.",
+        ],
+      },
+      {
+        heading: "Optional Google Analytics",
+        paragraphs: [
+          "With your permission, we use Google Analytics to understand broad website usage, including which pages people visit. The Google Analytics tag is not loaded until you accept optional analytics.",
+          "Analytics helps us improve the website. Please do not enter sensitive patient or clinical information into public enquiry links.",
+        ],
+      },
+      {
+        heading: "Change your preferences",
+        paragraphs: [
+          "Choose 'Cookie settings' near the bottom of the website to review your choice. You can accept analytics or reject it at any time.",
+          "For more information about handling of personal information, read our Privacy Policy.",
+        ],
+      },
+    ],
+  },
   "/governing-law-and-jurisdiction": {
     eyebrow: "Legal",
     title: "Governing Law and Jurisdiction",
@@ -766,7 +794,18 @@ function AppLink({ href, children, className = "", onClick, ...props }) {
 
   function handleClick(event) {
     onClick?.(event);
-    if (event.defaultPrevented || isExternal || !href.startsWith("/")) return;
+    if (
+      event.defaultPrevented ||
+      event.button !== 0 ||
+      event.metaKey ||
+      event.ctrlKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.currentTarget.hasAttribute("download") ||
+      event.currentTarget.target === "_blank" ||
+      isExternal ||
+      !href.startsWith("/")
+    ) return;
 
     event.preventDefault();
     navigateTo(href);
@@ -986,7 +1025,7 @@ function ServiceMenuIcon({ name, size = 24, className = "" }) {
 
 function Header() {
   const [menuOpen, setMenuOpen] = React.useState(false);
-  const pathname = window.location.pathname;
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
 
   React.useEffect(() => {
     function closeMenu() {
@@ -2516,7 +2555,7 @@ function SEO({ pathname }) {
 
     setMeta("description", seo.description);
     setMeta("keywords", seo.keywords);
-    setMeta("robots", "index, follow");
+    setMeta("robots", seoPages[pathname] ? "index, follow" : "noindex, follow");
 
     setProperty("og:title", seo.title);
     setProperty("og:description", seo.description);
@@ -2574,20 +2613,22 @@ function HomePage() {
               </p>
 
               <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row">
-                <AppLink
-                  href="/contact"
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Good day, Dr Mukudu & Partners. I would like to enquire about an appointment.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex w-full items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-[#081820] transition hover:bg-[#f5fbfb] sm:w-auto"
                 >
-                  Book Appointment
+                  Request appointment via WhatsApp
                   <ArrowIcon size={17} />
-                </AppLink>
+                </a>
 
                 <a
-                  href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                  href={`tel:${PHONE_NUMBER}`}
                   className="inline-flex w-full items-center justify-center gap-2 border border-white/30 px-6 py-3 text-sm font-medium text-white transition hover:border-[#58d6c2] hover:bg-white/10 sm:w-auto"
                 >
                   <Icon name="phone" size={16} />
-                  WhatsApp
+                  Call the practice
                 </a>
               </div>
 
@@ -3057,13 +3098,18 @@ function ClinicalServiceDetailPage({ service }) {
                 {service.intro}
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <AppLink href="/contact" className="inline-flex items-center justify-center gap-2 border border-[#174766] bg-[#174766] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b2532]">
-                  Arrange a consultation
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Good day, Dr Mukudu & Partners. I would like to enquire about your ${service.eyebrow.toLowerCase()} service.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 border border-[#174766] bg-[#174766] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#0b2532]"
+                >
+                  Request a consultation
                   <ArrowIcon size={16} />
-                </AppLink>
-                <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="inline-flex items-center justify-center gap-2 border border-[#bfd5df] px-6 py-3 text-sm font-semibold text-[#174766] transition hover:border-[#174766]">
+                </a>
+                <a href={`tel:${PHONE_NUMBER}`} className="inline-flex items-center justify-center gap-2 border border-[#bfd5df] px-6 py-3 text-sm font-semibold text-[#174766] transition hover:border-[#174766]">
                   <Icon name="phone" size={15} />
-                  WhatsApp practice
+                  Call the practice
                 </a>
               </div>
             </div>
@@ -3139,7 +3185,7 @@ function ClinicalServiceDetailPage({ service }) {
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <AppLink href="/contact" className="inline-flex items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-semibold text-[#081820] transition hover:bg-[#eef7fa]">
-              Book appointment
+              View contact options
               <ArrowIcon size={16} />
             </AppLink>
             <AppLink href="/services" className="inline-flex items-center justify-center border border-white/25 px-6 py-3 text-sm font-semibold text-white transition hover:border-[#58d6c2]">
@@ -3239,10 +3285,10 @@ function MedKululaPage() {
         <div className="grid gap-5 lg:grid-cols-3">{medkululaPlans.map((plan) => <div key={plan.name} className="flex flex-col rounded-lg border border-[#d8e5ec] bg-white p-6 shadow-[0_12px_40px_rgba(18,63,85,0.04)]"><p className="text-xs font-semibold uppercase tracking-normal text-[#6c8aa0]">{plan.name}</p><div className="mt-6 flex items-end gap-2"><p className="font-[Manrope,Inter,system-ui,sans-serif] text-4xl font-medium tracking-normal text-[#174766]">{plan.price}</p><p className="pb-1 text-sm text-[#5a6d76]">{plan.cadence}</p></div><p className="mt-5 flex-1 text-sm leading-7 text-[#5a6d76]">{plan.description}</p><AppLink href={plan.href} className="mt-7 inline-flex w-fit rounded-full bg-[#174766] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#123f55]">{plan.cta}</AppLink></div>)}</div>
       </Section>
       <Section eyebrow="Subscribe" title="Begin your subscription application." subtitle="Patients can begin the process online using the subscription form. Support is available if assistance is needed during the application.">
-        <div className="grid gap-5 md:grid-cols-2"><div className="rounded-lg border border-[#d8e5ec] bg-[#edf5f7] p-6"><p className="text-xs font-semibold uppercase tracking-normal text-[#6c8aa0]">Subscription form</p><p className="mt-4 text-base leading-7 text-[#174766]">Complete the MedKulula subscription form to begin your application.</p><a href="https://redcap.link/Dr_Mukudu_MedKulula_Subscription" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-[#174766] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#123f55]">Open subscription form</a></div><div className="rounded-lg border border-[#d8e5ec] bg-white p-6"><p className="text-xs font-semibold uppercase tracking-normal text-[#6c8aa0]">Student plan</p><p className="mt-4 text-base leading-7 text-[#174766]">Students can apply for the R200 monthly MedKulula Student Plan.</p><a href="https://redcap.link/Student_MedKulula_Subscription" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full border border-[#174766] px-5 py-2.5 text-sm font-medium text-[#174766] transition hover:bg-[#174766] hover:text-white">Open student form</a></div></div>
+        <div className="grid gap-5 md:grid-cols-2"><div className="rounded-lg border border-[#d8e5ec] bg-[#edf5f7] p-6"><p className="text-xs font-semibold uppercase tracking-normal text-[#6c8aa0]">Subscription form</p><p className="mt-4 text-base leading-7 text-[#174766]">Complete the MedKulula subscription form to begin your application.</p><a href="https://redcap.link/Dr_Mukudu_MedKulula_Subscription" target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full bg-[#174766] px-5 py-2.5 text-sm font-medium text-white transition hover:bg-[#123f55]">Open subscription form</a></div><div className="rounded-lg border border-[#d8e5ec] bg-white p-6"><p className="text-xs font-semibold uppercase tracking-normal text-[#6c8aa0]">Student plan</p><p className="mt-4 text-base leading-7 text-[#174766]">Students can apply for the R200 monthly MedKulula Student Plan.</p><a href="https://wa.me/27615471346?text=Good%20day%2C%20I%20would%20like%20to%20enquire%20about%20the%20MedKulula%20Student%20Plan." target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex rounded-full border border-[#174766] px-5 py-2.5 text-sm font-medium text-[#174766] transition hover:bg-[#174766] hover:text-white">Enquire about student enrolment</a></div></div>
       </Section>
       <Section eyebrow="Benefits" title="Designed for continuity and convenience."><div className="grid border-y border-[#d8e5ec] md:grid-cols-2 md:divide-x md:divide-[#d8e5ec]">{medkululaBenefits.map((benefit) => <div key={benefit} className="border-b border-[#d8e5ec] bg-white/55 p-6 last:border-b-0 md:border-b-0"><p className="text-base text-[#174766]">{benefit}</p></div>)}</div></Section>
-      <Section eyebrow="Support" title="Need help with the application?" tone="dark"><div className="grid gap-4 md:grid-cols-2"><div className="rounded-lg border border-white/10 bg-white/[0.05] p-6"><p className="text-xs uppercase tracking-normal text-white/40">Call</p><p className="mt-3 text-xl text-white">011 613 01141</p></div><div className="rounded-lg border border-white/10 bg-white/[0.05] p-6"><p className="text-xs uppercase tracking-normal text-white/40">WhatsApp</p><a href="https://wa.me/27615471346" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-xl text-white underline-offset-4 hover:underline">061 547 1346</a></div></div><blockquote className="mt-8 max-w-3xl border-l border-white/20 pl-6 text-lg leading-8 text-white/72">“Health is the foundation of life — without it, even the simplest joys become difficult to reach.”</blockquote></Section>
+      <Section eyebrow="Support" title="Need help with the application?" tone="dark"><div className="grid gap-4 md:grid-cols-2"><div className="rounded-lg border border-white/10 bg-white/[0.05] p-6"><p className="text-xs uppercase tracking-normal text-white/40">Call</p><a href={`tel:${PHONE_NUMBER}`} className="mt-3 inline-block text-xl text-white underline-offset-4 hover:underline">{DISPLAY_PHONE}</a></div><div className="rounded-lg border border-white/10 bg-white/[0.05] p-6"><p className="text-xs uppercase tracking-normal text-white/40">WhatsApp</p><a href="https://wa.me/27615471346" target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-xl text-white underline-offset-4 hover:underline">061 547 1346</a></div></div><blockquote className="mt-8 max-w-3xl border-l border-white/20 pl-6 text-lg leading-8 text-white/72">“Health is the foundation of life — without it, even the simplest joys become difficult to reach.”</blockquote></Section>
     </>
   );
 }
@@ -3335,11 +3381,11 @@ export function validateHomepageContent() {
 }
 
 export default function DrMukuduHomepage() {
-  const [pathname, setPathname] = React.useState(window.location.pathname);
+  const [pathname, setPathname] = React.useState(window.location.pathname.replace(/\/+$/, "") || "/");
 
   React.useEffect(() => {
     function handleRouteChange() {
-      setPathname(window.location.pathname);
+      setPathname(window.location.pathname.replace(/\/+$/, "") || "/");
     }
     window.addEventListener("popstate", handleRouteChange);
     return () => window.removeEventListener("popstate", handleRouteChange);
