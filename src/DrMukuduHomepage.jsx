@@ -675,6 +675,34 @@ const legalPages = {
       },
     ],
   },
+  "/cookie-policy": {
+    eyebrow: "Privacy",
+    title: "Cookie & Analytics Policy",
+    subtitle: "How browser storage and optional website analytics work, and how to change your preferences.",
+    sections: [
+      {
+        heading: "Essential browser storage",
+        paragraphs: [
+          "Dr Mukudu & Partners uses essential browser storage to remember your privacy preferences so you do not need to make the same choice on every visit.",
+          "You can reject optional analytics without losing access to the website.",
+        ],
+      },
+      {
+        heading: "Optional Google Analytics",
+        paragraphs: [
+          "With your permission, we use Google Analytics to understand broad website usage, including which pages people visit. The Google Analytics tag is not loaded until you accept optional analytics.",
+          "Analytics helps us improve the website. Please do not enter sensitive patient or clinical information into public enquiry links.",
+        ],
+      },
+      {
+        heading: "Change your preferences",
+        paragraphs: [
+          "Choose 'Cookie settings' near the bottom of the website to review your choice. You can accept analytics or reject it at any time.",
+          "For more information about handling of personal information, read our Privacy Policy.",
+        ],
+      },
+    ],
+  },
   "/governing-law-and-jurisdiction": {
     eyebrow: "Legal",
     title: "Governing Law and Jurisdiction",
